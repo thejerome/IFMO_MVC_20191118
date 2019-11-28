@@ -31,7 +31,7 @@ import org.apache.http.util.EntityUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.efimchixk.ifmo.web.mvc.MvcApplication;
+import com.efimchik.ifmo.web.mvc.MvcApplication;
 import com.google.common.collect.ImmutableMap;
 
 

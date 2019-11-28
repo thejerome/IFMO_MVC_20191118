@@ -1,4 +1,4 @@
-package com.efimchixk.ifmo.web.mvc;
+package com.efimchik.ifmo.web.mvc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
