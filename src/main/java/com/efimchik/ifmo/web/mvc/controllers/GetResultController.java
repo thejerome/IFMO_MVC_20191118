@@ -154,6 +154,7 @@ public class GetResultController {
             }
         }
         return s;
+
     }
 
     private boolean isOperator(String op) {
