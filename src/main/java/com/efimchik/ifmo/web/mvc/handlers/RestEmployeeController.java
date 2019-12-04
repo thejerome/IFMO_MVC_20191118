@@ -49,6 +49,7 @@ public class RestEmployeeController {
                             getEmployeeListByResultSet(preparedStatement.executeQuery()).get(0))
             );
         }
+        //codacy is shit
     }
 
 
