@@ -15,10 +15,8 @@ public class Result {
     @GetMapping("/calc/result")
     public ResponseEntity<String> getResult(HttpSession session){
         if (session == null){
-            //resp.setStatus(409);
             return new ResponseEntity<>(HttpStatus.valueOf(409));
         } else if (session.getAttribute("equation") == null){
-            //resp.setStatus(409);
             return new ResponseEntity<>(HttpStatus.valueOf(409));
         } else {
             String equation = session.getAttribute("equation").toString();
