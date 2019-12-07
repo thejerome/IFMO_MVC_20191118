@@ -3,7 +3,6 @@ package com.efimchik.ifmo.web.mvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -15,15 +14,14 @@ import java.util.Enumeration;
 public class ValueController {
     @RequestMapping(value = "/calc/{key:[a-z]|equation}",
                     method = RequestMethod.PUT)
-    public ResponseEntity setVariable(Model model,
-                                      @PathVariable String key,
+    public ResponseEntity setVariable(@PathVariable String key,
                                       @RequestBody String bodyValue,
                                       HttpSession session) {
 
-        bodyValue = bodyValue.replaceAll("\\s","");
-        if(key.equals("equation") && !EvalHelper.isExpression(bodyValue)) {
+        String body = bodyValue.replaceAll("\\s","");
+        if("equation".equals(key) && !EvalHelper.isExpression(body)) {
             return ResponseEntity.status(HttpStatus.valueOf(400)).body("bad format");
-        } else if (EvalHelper.isInteger(bodyValue) && (Integer.parseInt(bodyValue) > 10000 || Integer.parseInt(bodyValue) < -10000)){
+        } else if (EvalHelper.isInteger(body) && (Integer.parseInt(body) > 10000 || Integer.parseInt(body) < -10000)){
             return ResponseEntity.status(HttpStatus.valueOf(403)).body("bad value");
         }
 
@@ -35,14 +33,14 @@ public class ValueController {
                 String name = e.nextElement();
                 if(key.equals(name)) {
                     valueExists = true;
-                    session.setAttribute(key, bodyValue);
-                    return ResponseEntity.status(HttpStatus.valueOf(200)).body(key + ": " + bodyValue);
+                    session.setAttribute(key, body);
+                    return ResponseEntity.status(HttpStatus.valueOf(200)).body(key + ": " + body);
                 }
             }
         }
         if(!valueExists) {
-            session.setAttribute(key,bodyValue);
-            return ResponseEntity.status(HttpStatus.valueOf(201)).body(key + ": " + bodyValue);
+            session.setAttribute(key,body);
+            return ResponseEntity.status(HttpStatus.valueOf(201)).body(key + ": " + body);
         }
         return null;
     }

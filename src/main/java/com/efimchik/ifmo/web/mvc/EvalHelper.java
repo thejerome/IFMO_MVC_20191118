@@ -74,7 +74,7 @@ public class EvalHelper {
         return postfix.toString();
     }
 
-    static String delimitString(String equation) {
+    public static String delimitString(String equation) {
         StringJoiner joiner = new StringJoiner(",");
         for (char ch: equation.toCharArray()) {
             joiner.add(Character.toString(ch));
@@ -99,7 +99,7 @@ public class EvalHelper {
         }
     }
 
-    static int evaluate(String equation) {
+    public static int evaluate(String equation) {
         String[] arrOfStr = equation.split(",");
         Stack<Integer> stack = new Stack<Integer>();
 
@@ -116,7 +116,7 @@ public class EvalHelper {
         return stack.pop();
     }
 
-    static String getNumericEquation(String equation,
+    public static String getNumericEquation(String equation,
                                      Map<String, String> map) {
         StringBuilder numEquation = new StringBuilder();
         String parameter = "";
@@ -144,13 +144,13 @@ public class EvalHelper {
         System.out.println(numEquation.toString());
         return numEquation.toString();
     }
-    static boolean isExpression(String s) {
+    public static boolean isExpression(String s) {
         Pattern pattern = Pattern.compile("^[(]*[a-z0-9]?([-+/*][(]*[a-z0-9][)]*)*$");
         Matcher matcher = pattern.matcher(s);
         return matcher.matches();
     }
 
-    static boolean isValid(String value) {
+    public static boolean isValid(String value) {
         Pattern pattern = Pattern.compile("^[a-z]$");
         Matcher matcher = pattern.matcher(value);
         return matcher.matches();
