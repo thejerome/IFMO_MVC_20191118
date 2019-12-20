@@ -5,5 +5,8 @@ public enum Position {
     MANAGER,
     ANALYST,
     CLERK,
-    SALESMAN
+    SALESMAN;
+
+    Position() {
+    }
 }
