@@ -5,10 +5,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+
+@Embeddable
 public class FullName {
-    private final String firstName;
-    private final String lastName;
-    private final String middleName;
+    private String firstName;
+    private String lastName;
+    private String middleName;
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public FullName() {
+    }
 
     @JsonCreator
     public FullName(@JsonProperty("firstName") final String firstName,
@@ -17,6 +32,10 @@ public class FullName {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
+    }
+
+    public void setFirstName(String firstName){
+        this.firstName = firstName;
     }
 
     public String getFirstName() {

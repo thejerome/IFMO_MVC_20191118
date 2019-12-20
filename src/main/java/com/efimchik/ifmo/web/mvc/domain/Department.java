@@ -9,14 +9,37 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.IOException;
 import java.io.StringWriter;
 
+@Entity
+@Table(name = "DEPARTMENT")
 public class Department {
 
-    private final Long id;
-    private final String name;
-    private final String location;
+    @Id
+    private Long id;
+
+    private String name;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    private String location;
+
+    public Department() {
+    }
 
     @JsonCreator
     public Department(@JsonProperty("id") final Long id,

@@ -8,21 +8,78 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "EMPLOYEE")
 public class Employee {
-    private final Long id;
-    private final FullName fullName;
-    private final Position position;
-    private final LocalDate hired;
-    private final BigDecimal salary;
-    private final Employee manager;
-    private final Department department;
+    @Id
+    private Long id;
+
+    @Embedded
+    @AttributeOverrides(value = {
+            @AttributeOverride(name = "firstName", column = @Column(name = "FIRSTNAME")),
+            @AttributeOverride(name = "lastName", column = @Column(name = "LASTNAME")),
+            @AttributeOverride(name = "middleName", column = @Column(name = "MIDDLENAME")),
+    })
+    private FullName fullName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "POSITION")
+    private Position position;
+
+    @Column(name = "HIREDATE")
+    private LocalDate hired;
+
+    @Column(name = "SALARY")
+    private BigDecimal salary;
+
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = Employee.class)
+    @JoinColumn(name = "MANAGER", referencedColumnName = "ID")
+    private Employee manager;
+
+
+    public Employee() {
+    }
+
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = Department.class)
+    @JoinColumn(name = "DEPARTMENT", referencedColumnName = "ID")
+    private Department department;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setFullName(FullName fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public void setHired(LocalDate hired) {
+        this.hired = hired;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
+    public void setManager(Employee manager) {
+        this.manager = manager;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
     @JsonCreator
     public Employee(@JsonProperty("id") final Long id,
