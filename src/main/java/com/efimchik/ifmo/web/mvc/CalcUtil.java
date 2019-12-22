@@ -2,6 +2,7 @@ package com.efimchik.ifmo.web.mvc;
 
 //just cute
 
+
 public class CalcUtil {
 
     public static int cal(String st) {
