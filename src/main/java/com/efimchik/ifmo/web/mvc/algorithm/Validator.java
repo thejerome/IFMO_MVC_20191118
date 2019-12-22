@@ -30,10 +30,10 @@ public class Validator {
             }
             return 200;
         } catch (NumberFormatException e) {
-            if (val != null && !val.isEmpty()) {
-                if (Character.isAlphabetic(val.charAt(0))) {
-                    return 200;
-                }
+            if (val != null &&
+                    val.length() == 1 &&
+                    Character.isAlphabetic(val.charAt(0))) {
+                return 200;
             }
             return 403;
         }
