@@ -3,7 +3,13 @@ package com.efimchik.ifmo.web.mvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
@@ -28,7 +34,7 @@ public class CalcController {
         String response = "null";
         try {
 
-            if (variable.equals("equation")) {
+            if ("equation".equals(variable)) {
                 parseIntoPolishNotation(val);
             } else if (!Character.isLetter(val.toCharArray()[0])) {
                 int arg = Integer.parseInt(val);
@@ -135,6 +141,7 @@ public class CalcController {
                         int arg = Integer.parseInt(token);
                         stack.addFirst(arg);
                     }
+                    break;
             }
         }
         return stack.removeFirst();
@@ -163,7 +170,7 @@ public class CalcController {
                         while ("+-/*".contains(stack.getFirst())) {
                             polishNotation.add(stack.removeFirst());
                         }
-                        if (token.equals(")")) {
+                        if (")".equals(token)) {
                             if (!stack.getFirst().equals("("))
                                 throw new ParseException("notValidEquation", 0);
                             stack.removeFirst();
@@ -185,8 +192,9 @@ public class CalcController {
                         polishNotation.add(token);
                 }
             } catch (NoSuchElementException e) {
-                if (!token.equals(")"))
+                if (!token.equals(")")) {
                     stack.addFirst(token);
+                }
             }
         }
         while (!stack.isEmpty()) {
