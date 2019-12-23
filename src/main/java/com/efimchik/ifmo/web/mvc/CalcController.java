@@ -154,22 +154,19 @@ public class CalcController {
                 || equation.contains("/"))) {
             throw new ParseException("notValidEquation", 0);
         }
-        List<String> tokens = new ArrayList<>();
         StringTokenizer tokenizer = new StringTokenizer(equation.replaceAll(" ", ""), "()+-/*", true);
-        while (tokenizer.hasMoreElements()) {
-            tokens.add(tokenizer.nextToken());
-        }
+
         Deque<String> stack = new ArrayDeque<>();
         List<String> polishNotation = new ArrayList<>();
-        for (String token : tokens) {
+
+        while (tokenizer.hasMoreElements()) {
+            String token = tokenizer.nextToken();
             try {
                 switch (token) {
                     case "+":
                     case "-":
                     case ")":
-                        while ("+-/*".contains(stack.getFirst())) {
-                            polishNotation.add(stack.removeFirst());
-                        }
+                        iterateAndRemove("+-/*", stack, polishNotation);
                         if (")".equals(token)) {
                             if (!stack.getFirst().equals("("))
                                 throw new ParseException("notValidEquation", 0);
@@ -180,9 +177,7 @@ public class CalcController {
                         break;
                     case "*":
                     case "/":
-                        while ("/*".contains(stack.getFirst())) {
-                            polishNotation.add(stack.removeFirst());
-                        }
+                        iterateAndRemove("/*", stack, polishNotation);
                         stack.addFirst(token);
                         break;
                     case "(":
@@ -192,7 +187,7 @@ public class CalcController {
                         polishNotation.add(token);
                 }
             } catch (NoSuchElementException e) {
-                if (!token.equals(")")) {
+                if (!")".equals(token)) {
                     stack.addFirst(token);
                 }
             }
@@ -203,5 +198,11 @@ public class CalcController {
             polishNotation.add(stack.removeFirst());
         }
         return polishNotation;
+    }
+
+    private void iterateAndRemove(String match, Deque<String> stack, List<String> polishNotation) {
+        while (match.contains(stack.getFirst())) {
+            polishNotation.add(stack.removeFirst());
+        }
     }
 }
