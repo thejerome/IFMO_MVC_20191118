@@ -17,7 +17,7 @@ import java.util.List;
 public class EmployeeRestController {
 
     @Autowired
-    EmployeeDao employeeDao;
+    private EmployeeDao employeeDao;
 
     @GetMapping
     public List<Employee> getAll(

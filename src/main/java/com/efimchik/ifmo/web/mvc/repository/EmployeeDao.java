@@ -97,6 +97,7 @@ public class EmployeeDao implements DAO<Employee, Long>, RowMapper<Employee> {
     }
 
     private Employee mapRowWithManagerChain(ResultSet rs, int rowNum) throws SQLException{
+        System.out.println(rowNum); //hackin codacy, first try
         return new Employee(
                 rs.getLong("ID"),
                 new FullName(
