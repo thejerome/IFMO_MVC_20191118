@@ -1,4 +1,4 @@
-package com.efimchik.ifmo.web.mvc;
+package com.efimchik.ifmo.web.mvc.checkerAndCalculator;
 
 import javafx.util.Pair;
 
