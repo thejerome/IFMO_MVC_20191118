@@ -1,4 +1,4 @@
-package com.efimchik.ifmo.web.mvc.checkerAndCalculator;
+package com.efimchik.ifmo.web.mvc.checkerandcalculator;
 
 import java.util.regex.Pattern;
 

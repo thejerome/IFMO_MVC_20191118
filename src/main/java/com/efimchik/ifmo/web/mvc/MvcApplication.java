@@ -1,13 +1,17 @@
 package com.efimchik.ifmo.web.mvc;
 
-import com.efimchik.ifmo.web.mvc.checkerAndCalculator.Calculator;
-import com.efimchik.ifmo.web.mvc.checkerAndCalculator.Checker;
+import com.efimchik.ifmo.web.mvc.checkerandcalculator.Calculator;
+import com.efimchik.ifmo.web.mvc.checkerandcalculator.Checker;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
