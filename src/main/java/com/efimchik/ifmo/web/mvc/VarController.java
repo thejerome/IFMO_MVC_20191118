@@ -12,11 +12,11 @@ public class VarController {
     {
         if (((Integer.valueOf(val*val)<100000000)||((val.charAt(0) >= 'a' && val.charAt(0) <= 'z'))))
         {
-            return true
+            return true;
         }
         else
         {
-            return false
+            return false;
         }
     }
     @PutMapping("/calc/{name}")
