@@ -26,7 +26,7 @@ public class ResultController {
     public static String setVars (String s, Map<String, String> eqMap)
     {
         for (int i = 0; i < s.length(); i++) {
-            if (ifCorrectCh(s.charAt(i))
+            if (ifCorrectCh(s.charAt(i)))
                 s = s.replace(Character.toString(s.charAt(i)),
                         eqMap.get(Character.toString(s.charAt(i))));
         }

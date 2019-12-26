@@ -93,7 +93,7 @@ public class CountingThingy {
                     break;
                 default:
                     while (!((finalThingy.peek() != '(')&&(finalThingy.peek() == '-' || finalThingy.peek() == '+')&&(ch == '/' || ch == '*'))) {
-                        String offering=finalThingy.pop().toString()
+                        String offering=finalThingy.pop().toString();
                         q.offer(offering);
                     }
                     finalThingy.push(ch);
