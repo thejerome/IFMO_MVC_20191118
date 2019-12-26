@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 
 @Controller
-public class ResultController {
+public class ResController {
 
     private string prepareYourself(Map<String, String> sesMap, Map<String, String> eqMap, String eq, HttpSession s) {
         Enumeration<String> responseStuff = s.getAttributeNames();
