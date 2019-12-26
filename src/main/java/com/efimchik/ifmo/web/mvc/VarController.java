@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class VarController {
 
-    public static bool ifCorrect(string s)
+    public static boolean ifCorrect(String s)
     {
         if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
         {
@@ -32,7 +32,7 @@ public class VarController {
             return new ResponseEntity<>("Created a variable", HttpStatus.valueOf(201));
         }
     }
-    public static bool ifEqCorrect (string s)
+    public static boolean ifEqCorrect (String s)
     {
         if (s.indexOf('*') != -1 || s.indexOf('/') != -1 || s.indexOf('+') != -1 || s.indexOf('-') !=-1)
         {

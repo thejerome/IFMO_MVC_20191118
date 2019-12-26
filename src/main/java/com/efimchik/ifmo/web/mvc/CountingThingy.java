@@ -44,7 +44,7 @@ public class CountingThingy {
 
         return finalThingy.pop();
     }
-    public static bool ifEqCorrect (string s)
+    public static boolean ifEqCorrect (String s)
     {
         if (s.indexOf('*') != -1 || s.indexOf('/') != -1 || s.indexOf('+') != -1 || s.indexOf('-') != -1)
         {
@@ -55,7 +55,7 @@ public class CountingThingy {
             return false;
         }
     }
-    public static bool ifCorrectCh(string s)
+    public static boolean ifCorrectCh(String s)
     {
         if (((s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
         {
@@ -84,19 +84,19 @@ public class CountingThingy {
             }
             switch (ch) {
                 case  ('('):
-                    finalThingy.push(ch);
+                    eqStack.push(ch);
                     break;
                 case (')'):
-                    while (finalThingy.peek() != '(')
-                        q.offer(finalThingy.pop().toString());
-                    finalThingy.pop();
+                    while (eqStack.peek() != '(')
+                        polQ.offer(eqStack.pop().toString());
+                    eqStack.pop();
                     break;
                 default:
-                    while (!((finalThingy.peek() != '(')&&(finalThingy.peek() == '-' || finalThingy.peek() == '+')&&(ch == '/' || ch == '*'))) {
-                        String offering=finalThingy.pop().toString();
-                        q.offer(offering);
+                    while (!((eqStack.peek() != '(')&&(eqStack.peek() == '-' || eqStack.peek() == '+')&&(ch == '/' || ch == '*'))) {
+                        String offering=eqStack.pop().toString();
+                        polQ.offer(offering);
                     }
-                    finalThingy.push(ch);
+                    eqStack.push(ch);
                     break;
             }
             i=i+1;
@@ -106,7 +106,7 @@ public class CountingThingy {
         }
         return polQ;
     }
-    public static bool ifCorrect(string s)
+    public static boolean ifCorrect(String s)
     {
         if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
         {
