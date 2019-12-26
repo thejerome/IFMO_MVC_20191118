@@ -9,80 +9,93 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-
 @Controller
-public class ResController {
+public class ResultController {
 
-    private String prepareYourself(Map<String, String> sesMap, Map<String, String> eqMap, String eq, HttpSession s) {
-        Enumeration<String> responseStuff = s.getAttributeNames();
-        while (responseStuff.hasMoreElements()) {
-            String var = responseStuff.nextElement();
-            sesMap.put(var, s.getAttribute(var).toString());
-        }
-        sesMap.remove("equation");
-        boolean retardedCheck=checkIfGood(eq);
-        for (int i = 0; i < eq.length(); i++) {
-            //if (checkIfVarGood(eq.charAt(i)))
-                eqMap.put(Character.toString(eq.charAt(i)), "");
-        }
-        for (Map.Entry<String, String> var : eqMap.entrySet()) {
-            String key = var.getKey();
-            String val = sesMap.get(key);
-            if (val == null)
-                throw new IllegalArgumentException("No such value");
-            while (!Pattern.matches("^[-0-9]+$", val)) {
-                key = val;
-                val = sesMap.get(key);
-                if (val == null)
-                    throw new IllegalArgumentException("No such value");
-            }
-            var.setValue(val);
-        }
-        for (int i = 0; i < eq.length(); i++) {
-            if (eq.charAt(i) >= 'a' && eq.charAt(i) <= 'z')
-                eq= eq.replace(Character.toString(eq.charAt(i)),
-                        eqMap.get(Character.toString(eq.charAt(i))));
-        }
-        return eq;
-    }
-    private static boolean checkIfGood (String s)
+    public static bool ifCorrect(string s)
     {
-        if ((s.indexOf('+') == 1 || s.indexOf('-') == 1 || s.indexOf('*') == 1 || s.indexOf('/') == 1))
+        if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
         {
             return true;
         }
         else
         {
-            return false;
+            return  false;
         }
     }
-    private static boolean checkIfVarGood (String val)
+    public static String setVars (String s, Map<String, String> eqMap)
     {
-        if (((Integer.valueOf(val)*Integer.valueOf(val)<100000000)||((val.charAt(0) >= 'a' && val.charAt(0) <= 'z'))))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
+        for (int i = 0; i < s.length(); i++) {
+            if (ifCorrectCh(s.charAt(i))
+                s = s.replace(Character.toString(s.charAt(i)),
+                        eqMap.get(Character.toString(s.charAt(i))));
         }
     }
     @GetMapping("/calc/result")
     public ResponseEntity<String> getResult(HttpSession s) {
         try {
-            if ((s.getAttribute("equation"))==null)
-                throw new IllegalArgumentException("No such equation");
+            if (s.getAttribute("equation") == null)
+                throw new IllegalArgumentException("No equation found");
             String eq = s.getAttribute("equation").toString().replace(" ", "");
             Map<String, String> sesMap = new HashMap();
             Map<String, String> eqMap = new HashMap();
-            return new ResponseEntity<>(Integer.toString(CountingThingy.process(prepareYourself(sesMap, eqMap, eq, s))), HttpStatus.valueOf(200));
+            prepareYourself(s, eq, sesMap, eqMap);
+            return new ResponseEntity<>(Integer.toString(CountingThingy.process(setVars(s,eqMap))), HttpStatus.valueOf(200));
         }
         catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.valueOf(409));
         }
     }
+    public static bool ifEqCorrect (string s)
+    {
+        if (s.indexOf('*') != -1 || s.indexOf('/') != -1 || s.indexOf('+') != -1 || s.indexOf('-') !=-1)
+        {
+            return  true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private void prepareYourself(HttpSession s, String eq, Map<String, String> sesMap, Map<String, String> eqMap) {
 
+        Enumeration<String> attributes = s.getAttributeNames();
 
+        while (attributes.hasMoreElements()) {
+            String var = attributes.nextElement();
+            String var1=s.getAttribute(var).toString();
+            sesMap.put(var, var1);
+        }
+        sesMap.remove("equation");
+        for (int i = 0; i < eq.length(); i++) {
+            if (ifCorrectCh(eq.charAt(i)))
+                eqMap.put(Character.toString(eq.charAt(i)), "");
+        }
+            for (Map.Entry<String, String> var : eqMap.entrySet()) {
+                String key = var.getKey();
+                String val = sesMap.get(key);
+                if (val == null)
+                    throw new IllegalArgumentException("No such value");
+                while (!Pattern.matches("^[-0-9]+$", val)) {
+                    key = val;
+                    val = sesMap.get(key);
+                    if (val == null)
+                        throw new IllegalArgumentException("No such value");
+                }
+                var.setValue(val);
+            }
+    }
+    public static bool ifCorrectCh(string s)
+    {
+        if (((s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
+        {
+            return true;
+        }
+        else
+        {
+            return  false;
+        }
+    }
 
 
 }

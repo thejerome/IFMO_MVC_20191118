@@ -9,41 +9,57 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class EqController {
-
-    public static boolean checkIfGood (String s)
+    public static bool ifEqCorrect (string s)
     {
-        if ((s.indexOf('+') == 1 || s.indexOf('-') == 1 || s.indexOf('*') == 1 || s.indexOf('/') == 1))
+        if (s.indexOf('*') != -1 || s.indexOf('/') != -1 || s.indexOf('+') != -1 || s.indexOf('-') != -1)
         {
-            return true;
+            return  true;
         }
         else
         {
             return false;
         }
     }
-    @PutMapping("/calc/equation")
-    public ResponseEntity<String> putEq(HttpSession s, @RequestBody String eq)
-    {
+    @PutMapping("/calc/eq")
+    public ResponseEntity<String> putEquation(HttpSession s, @RequestBody String eq) {
 
-        if (checkIfGood(eq)==false)
-        {
-            return new ResponseEntity<>("That equation is meh", HttpStatus.valueOf(400));
-        }
+        if (!ifEqCorrect(eq))
+            return new ResponseEntity<>("That was  a bad thingy", HttpStatus.valueOf(400));
 
-        if (s.getAttribute("equation")!=null)
-        {
+        if (s.getAttribute("equation") != null) {
             s.setAttribute("equation", eq);
-            return new ResponseEntity<>("Corrected an equation", HttpStatus.valueOf(200));
+            return new ResponseEntity<>("Replaced an equation", HttpStatus.valueOf(200));
         }
-        else
-            {
-                s.setAttribute("equation", eq);
-                return new ResponseEntity<>("Created an equation", HttpStatus.valueOf(201));
+        else {
+            s.setAttribute("equation", eq);
+            return new ResponseEntity<>("Created an equation", HttpStatus.valueOf(201));
         }
     }
-    @DeleteMapping("/calc/equation")
-    public ResponseEntity delEq(HttpSession s){
+    public static bool ifCorrect(string s)
+    {
+        if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
+        {
+            return true;
+        }
+        else
+        {
+            return  false;
+        }
+    }
+    @DeleteMapping("/calc/eq")
+    public ResponseEntity deleteEquation(HttpSession s){
         s.removeAttribute("equation");
-        return new ResponseEntity<>("Efimchik forces me to code java, please help", HttpStatus.valueOf(204));
+        return new ResponseEntity<>("Wiped out, diverged to atoms", HttpStatus.valueOf(204));
+    }
+    public static bool ifCorrect(string s)
+    {
+        if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
+        {
+            return true;
+        }
+        else
+        {
+            return  false;
+        }
     }
 }
