@@ -72,10 +72,10 @@ public class CountingThingy
         }
         else
         {
-            return null;
+            return -1;
             ///we fucked up
         }
-        return null;
+        return -1;
     }
     public static boolean checkIfVarGood (String val)
     {
