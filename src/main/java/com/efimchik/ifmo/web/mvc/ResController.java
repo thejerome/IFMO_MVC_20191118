@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 @Controller
 public class ResController {
 
-    private string prepareYourself(Map<String, String> sesMap, Map<String, String> eqMap, String eq, HttpSession s) {
+    private String prepareYourself(Map<String, String> sesMap, Map<String, String> eqMap, String eq, HttpSession s) {
         Enumeration<String> responseStuff = s.getAttributeNames();
         while (responseStuff.hasMoreElements()) {
             String var = responseStuff.nextElement();
