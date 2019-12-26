@@ -40,7 +40,7 @@ public class ResController {
             Map<String, String> sesMap = new HashMap();
             Map<String, String> eqMap = new HashMap();
             prepareYourself(s, eq, sesMap, eqMap);
-            return new ResponseEntity<>(Integer.toString(CountingThingy.process(setVars(s,eqMap))), HttpStatus.valueOf(200));
+            return new ResponseEntity<>(Integer.toString(CountingThingy.process(setVars(eq,eqMap))), HttpStatus.valueOf(200));
         }
         catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.valueOf(409));
