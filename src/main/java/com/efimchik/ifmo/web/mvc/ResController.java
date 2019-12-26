@@ -30,6 +30,7 @@ public class ResController {
                 s = s.replace(Character.toString(s.charAt(i)),
                         eqMap.get(Character.toString(s.charAt(i))));
         }
+        return s;
     }
     @GetMapping("/calc/result")
     public ResponseEntity<String> getResult(HttpSession s) {
