@@ -2,7 +2,7 @@ package com.efimchik.ifmo.web.mvc;
 import java.util.ArrayDeque;
 import java.util.Stack;
 import java.util.regex.Pattern;
-public class CalculatorUtil
+public class CountingThingy
 {
     public boolean checkIfGood (String s)
     {

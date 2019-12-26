@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class EquationController {
+public class EqController {
 
     public boolean checkIfGood (String s)
     {
