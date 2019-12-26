@@ -6,35 +6,11 @@ import com.efimchik.ifmo.web.mvc.domain.Employee;
 
 public interface EmployeeService {
 
-    List<Employee> getAll(Paging paging);
+    List<Employee> getAll(Paging paging, String sort);
 
-    List<Employee> getAllSortByHireDate(Paging paging);
+    List<Employee> getbyDepartment(String department, Paging paging, String sort);
 
-    List<Employee> getAllSortByLastname(Paging paging);
-
-    List<Employee> getAllSortBySalary(Paging paging);
-
-    List<Employee> getAllSortByPosition(Paging paging);
-
-    List<Employee> getByDepartmentSortByHireDate(String department, Paging paging);
-
-    List<Employee> getByDepartmentSortBySalary(String department, Paging paging);
-
-    List<Employee> getByDepartmentSortByLastname(String department, Paging paging);
-
-    List<Employee> getByDepartmentSortByPosition(String department, Paging paging);
-
-    List<Employee> getAllbyDepartment(String department, Paging paging);
-
-    List<Employee> getByManagerSortByLastname(String manager, Paging paging);
-
-    List<Employee> getByManagerSortByHireDate(String manager, Paging paging);
-
-    List<Employee> getByManagerSortBySalary(String manager, Paging paging);
-
-    List<Employee> getByManagerSortByPosition(String manager, Paging paging);
-
-    List<Employee> getAllbyManager(String manager, Paging paging);
+    List<Employee> getbyManager(String manager, Paging paging, String sort);
 
     Employee getWithId(String Id, boolean chain);
 }

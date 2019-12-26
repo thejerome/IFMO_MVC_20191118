@@ -20,9 +20,26 @@ public class ServiceFactory {
         return new EmployeeService() {
 
             @Override
-            public List<Employee> getAll(Paging paging) {
+            public List<Employee> getAll(Paging paging, String sort) {
                 try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE", getAllEmployee(false, getAllDepartment()));
+                    List<Employee> list;
+                    switch (sort) {
+                        case "lastName":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE ORDER BY LASTNAME", getAllEmployee(false, getAllDepartment()));
+                            break;
+                        case "hired":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE ORDER BY HIREDATE", getAllEmployee(false, getAllDepartment()));
+                            break;
+                        case "position":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE ORDER BY POSITION", getAllEmployee(false, getAllDepartment()));
+                            break;
+                        case "salary":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE ORDER BY SALARY", getAllEmployee(false, getAllDepartment()));
+                            break;
+                        default:
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE", getAllEmployee(false, getAllDepartment()));
+                            break;
+                    }
                     return getEmployees(paging, list);
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -30,64 +47,31 @@ public class ServiceFactory {
                 return null;
             }
 
-            @Override
-            public List<Employee> getAllSortByHireDate(Paging paging) {
-                try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE ORDER BY HIREDATE", getAllEmployee(false, getAllDepartment()));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            public List<Employee> getAllSortByLastname(Paging paging) {
-                try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE ORDER BY LASTNAME", getAllEmployee(false, getAllDepartment()));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            public List<Employee> getAllSortBySalary(Paging paging) {
-                try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE ORDER BY SALARY", getAllEmployee(false, getAllDepartment()));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            public List<Employee> getAllSortByPosition(Paging paging) {
-                try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE ORDER BY POSITION", getAllEmployee(false, getAllDepartment()));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            public List<Employee> getByDepartmentSortByHireDate(String department, Paging paging) {
+            public List<Employee> getbyDepartment(String department, Paging paging, String sort) {
                 try {
                     List<Employee> list;
                     List<Department> ld = getAllDepartment();
-                    if (!department.contains("[0-9]+")) {
-                        for (Department department1 : ld) {
-                            if (department1.getName().equals(department)) {
-                                department = department1.getId().toString();
-                                break;
-                            }
-                        }
+                    if (!department.matches(".*\\d.*")) {
+                        department = proceedDepartment(department, ld);
+                        System.out.println(department);
                     }
-                    list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department + " ORDER BY HIREDATE", getAllEmployee(false, ld));
+                    switch (sort) {
+                        case "lastName":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department + " ORDER BY LASTNAME", getAllEmployee(false, ld));
+                            break;
+                        case "hired":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department + " ORDER BY HIREDATE", getAllEmployee(false, ld));
+                            break;
+                        case "position":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department + " ORDER BY POSITION", getAllEmployee(false, ld));
+                            break;
+                        case "salary":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department + " ORDER BY SALARY", getAllEmployee(false, ld));
+                            break;
+                        default:
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department, getAllEmployee(false, ld));
+                            break;
+                    }
                     return getEmployees(paging, list);
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -95,135 +79,26 @@ public class ServiceFactory {
                 return null;
             }
 
-            @Override
-            public List<Employee> getByDepartmentSortBySalary(String department, Paging paging) {
+            public List<Employee> getbyManager(String manager, Paging paging, String sort) {
                 try {
                     List<Employee> list;
-                    List<Department> ld = getAllDepartment();
-                    if (!department.contains("[0-9]+")) {
-                        for (Department department1 : ld) {
-                            if (department1.getName().equals(department)) {
-                                department = department1.getId().toString();
-                                break;
-                            }
-                        }
+                    switch (sort) {
+                        case "lastName":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager + " ORDER BY LASTNAME", getAllEmployee(false, getAllDepartment()));
+                            break;
+                        case "hired":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager + " ORDER BY HIREDATE", getAllEmployee(false, getAllDepartment()));
+                            break;
+                        case "position":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager + " ORDER BY POSITION", getAllEmployee(false, getAllDepartment()));
+                            break;
+                        case "salary":
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager + " ORDER BY SALARY", getAllEmployee(false, getAllDepartment()));
+                            break;
+                        default:
+                            list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager, getAllEmployee(false, getAllDepartment()));
+                            break;
                     }
-                    list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department + " ORDER BY SALARY", getAllEmployee(false, ld));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            public List<Employee> getByDepartmentSortByLastname(String department, Paging paging) {
-                try {
-                    List<Employee> list;
-                    List<Department> ld = getAllDepartment();
-                    if (!department.contains("[0-9]+")) {
-                        for (Department department1 : ld) {
-                            if (department1.getName().equals(department)) {
-                                department = department1.getId().toString();
-                                break;
-                            }
-                        }
-                    }
-                    list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department + " ORDER BY LASTNAME", getAllEmployee(false, ld));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            public List<Employee> getByDepartmentSortByPosition(String department, Paging paging) {
-                try {
-                    List<Employee> list;
-                    List<Department> ld = getAllDepartment();
-                    if (!department.contains("[0-9]+")) {
-                        for (Department department1 : ld) {
-                            if (department1.getName().equals(department)) {
-                                department = department1.getId().toString();
-                                break;
-                            }
-                        }
-                    }
-                    list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department + " ORDER BY POSITION", getAllEmployee(false, ld));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            public List<Employee> getAllbyDepartment(String department, Paging paging) {
-                try {
-                    List<Employee> list;
-                    List<Department> ld = getAllDepartment();
-                    if (!department.contains("[0-9]+")) {
-                        for (Department department1 : ld) {
-                            if (department1.getName().equals(department)) {
-                                department = department1.getId().toString();
-                                break;
-                            }
-                        }
-                    }
-                    list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE EMPLOYEE.DEPARTMENT = " + department, getAllEmployee(false, ld));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            public List<Employee> getByManagerSortByLastname(String manager, Paging paging) {
-                try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager +" ORDER BY LASTNAME", getAllEmployee(false, getAllDepartment()));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            public List<Employee> getByManagerSortByHireDate(String manager, Paging paging) {
-                try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager +" ORDER BY HIREDATE", getAllEmployee(false, getAllDepartment()));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            public List<Employee> getByManagerSortBySalary(String manager, Paging paging) {
-                try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager +" ORDER BY SALARY", getAllEmployee(false, getAllDepartment()));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            public List<Employee> getByManagerSortByPosition(String manager, Paging paging) {
-                try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager +" ORDER BY POSITION", getAllEmployee(false, getAllDepartment()));
-                    return getEmployees(paging, list);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            public List<Employee> getAllbyManager(String manager, Paging paging) {
-                try {
-                    List<Employee> list = getEmployeesOrder("SELECT * FROM EMPLOYEE WHERE MANAGER = " + manager, getAllEmployee(false, getAllDepartment()));
                     return getEmployees(paging, list);
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -323,6 +198,17 @@ public class ServiceFactory {
             ld.add(new Department((long) resultSet.getInt("ID"), resultSet.getString("NAME"), resultSet.getString("LOCATION")));
         }
         return ld;
+    }
+
+    private static String proceedDepartment(String department, List<Department> ld) {
+        String result = null;
+        for (Department department1 : ld) {
+            if (department1.getName().equals(department)) {
+                result = department1.getId().toString();
+                break;
+            }
+        }
+        return result;
     }
 }
 
