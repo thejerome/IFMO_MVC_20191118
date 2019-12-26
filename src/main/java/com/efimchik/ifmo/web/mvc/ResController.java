@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @Controller
 public class ResController {
 
-    public static bool ifCorrect(String s)
+    public static boolean ifCorrect(String s)
     {
         if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
         {
@@ -46,7 +46,7 @@ public class ResController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.valueOf(409));
         }
     }
-    public static bool ifEqCorrect (String s)
+    public static boolean ifEqCorrect (String s)
     {
         if (s.indexOf('*') != -1 || s.indexOf('/') != -1 || s.indexOf('+') != -1 || s.indexOf('-') !=-1)
         {
@@ -85,7 +85,7 @@ public class ResController {
                 var.setValue(val);
             }
     }
-    public static bool ifCorrectCh(char s)
+    public static boolean ifCorrectCh(char s)
     {
         if (((s >= 'a' && s <= 'z')))
         {
