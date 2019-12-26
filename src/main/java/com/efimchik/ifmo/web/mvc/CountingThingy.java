@@ -4,15 +4,15 @@ import java.util.Stack;
 import java.util.regex.Pattern;
 public class CountingThingy
 {
-    public boolean checkIfGood (String s)
+    public static boolean checkIfGood (String s)
     {
         if ((s.indexOf('+') == 1 || s.indexOf('-') == 1 || s.indexOf('*') == 1 || s.indexOf('/') == 1))
         {
-            return true
+            return true;
         }
         else
         {
-            return false
+            return false;
         }
     }
     private static int calculate(ArrayDeque<String> q) {
@@ -67,12 +67,23 @@ public class CountingThingy
                     temp.insert(i, '0');
                 i++;
             }
-            String s = buff.toString();
-            return calculate(buff);
+            String s = temp.toString();
+            return calculate(temp);
         }
         else
         {
             ///we fucked up
+        }
+    }
+    public static boolean checkIfGood (String val)
+    {
+        if (((Integer.valueOf(val)*Integer.valueOf(val)<100000000)||((val.charAt(0) >= 'a' && val.charAt(0) <= 'z'))))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
     private static ArrayDeque<String> polskaNotation(StringBuffer target) {

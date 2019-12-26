@@ -8,15 +8,15 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class VarController {
 
-    public boolean checkIfGood (String val)
+    public static boolean checkIfGood (String val)
     {
-        if (((Integer.valueOf(val*val)<100000000)||((val.charAt(0) >= 'a' && val.charAt(0) <= 'z'))))
+        if (((Integer.valueOf(val)*Integer.valueOf(val)<100000000)||((val.charAt(0) >= 'a' && val.charAt(0) <= 'z'))))
         {
-            return true
+            return true;
         }
         else
         {
-            return false
+            return false;
         }
     }
     @PutMapping("/calc/{name}")
@@ -25,7 +25,7 @@ public class VarController {
         {
             return new ResponseEntity<>("That's a bad thingy", HttpStatus.valueOf(403));
         }
-        if (s.getAttribute(n))
+        if (s.getAttribute(n)!=null)
         {
             s.setAttribute(n, val);
             return new ResponseEntity<>("Replaced a var", HttpStatus.valueOf(200));

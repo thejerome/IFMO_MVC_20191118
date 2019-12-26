@@ -10,34 +10,34 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class EqController {
 
-    public boolean checkIfGood (String s)
+    public static boolean checkIfGood (String s)
     {
         if ((s.indexOf('+') == 1 || s.indexOf('-') == 1 || s.indexOf('*') == 1 || s.indexOf('/') == 1))
         {
-            return true
+            return true;
         }
         else
         {
-            return false
+            return false;
         }
     }
     @PutMapping("/calc/equation")
     public ResponseEntity<String> putEq(HttpSession s, @RequestBody String eq)
     {
 
-        if (!checkIfGood(val))
+        if (!checkIfGood(eq)
         {
             return new ResponseEntity<>("That equation is meh", HttpStatus.valueOf(400));
         }
 
         if (session.getAttribute("equation"))
         {
-            session.setAttribute("equation", eq);
+            s.setAttribute("equation", eq);
             return new ResponseEntity<>("Corrected an equation", HttpStatus.valueOf(200));
         }
         else
             {
-                session.setAttribute("equation", eq);
+                s.setAttribute("equation", eq);
                 return new ResponseEntity<>("Created an equation", HttpStatus.valueOf(201));
         }
     }

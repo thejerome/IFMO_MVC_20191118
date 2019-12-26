@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 
 @Controller
-public class ResultController {
+public class ResController {
 
     private string prepareYourself(Map<String, String> sesMap, Map<String, String> eqMap, String eq, HttpSession s) {
         Enumeration<String> responseStuff = s.getAttributeNames();
@@ -22,7 +22,7 @@ public class ResultController {
         sesMap.remove("equation");
         boolean retardedCheck=checkIfGood(eq);
         for (int i = 0; i < eq.length(); i++) {
-            if (checkIfVarGood(eq.charAt(i)))
+            //if (checkIfVarGood(eq.charAt(i)))
                 eqMap.put(Character.toString(eq.charAt(i)), "");
         }
         for (Map.Entry<String, String> var : eqMap.entrySet()) {
@@ -45,34 +45,34 @@ public class ResultController {
         }
         return eq;
     }
-    private boolean checkIfGood (String s)
+    private static boolean checkIfGood (String s)
     {
-        if ((s.indexOf('+') == 1 || s.indexOf('-') == 1 || s.indexOf('*') == 1 || sn.indexOf('/') == 1))
+        if ((s.indexOf('+') == 1 || s.indexOf('-') == 1 || s.indexOf('*') == 1 || s.indexOf('/') == 1))
         {
-            return true
+            return true;
         }
         else
         {
-            return false
+            return false;
         }
     }
-    public boolean checkIfVarGood (String val)
+    private static boolean checkIfVarGood (String val)
     {
-        if (((Integer.valueOf(val*val)<100000000)||((val.charAt(0) >= 'a' && val.charAt(0) <= 'z'))))
+        if (((Integer.valueOf(val)*Integer.valueOf(val)<100000000)||((val.charAt(0) >= 'a' && val.charAt(0) <= 'z'))))
         {
-            return true
+            return true;
         }
         else
         {
-            return false
+            return false;
         }
     }
     @GetMapping("/calc/result")
     public ResponseEntity<String> getResult(HttpSession s) {
         try {
-            if (!(session.getAttribute("equation")))
+            if (!(s.getAttribute("equation")))
                 throw new IllegalArgumentException("No such equation");
-            String eq = session.getAttribute("equation").toString().replace(" ", "");
+            String eq = s.getAttribute("equation").toString().replace(" ", "");
             Map<String, String> sesMap = new HashMap();
             Map<String, String> eqMap = new HashMap();
             return new ResponseEntity<>(Integer.toString(CountingThingy.process(prepareYourself(sesMap, eqMap, eq, s))), HttpStatus.valueOf(200));
