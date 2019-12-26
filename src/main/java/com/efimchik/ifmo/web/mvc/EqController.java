@@ -30,7 +30,7 @@ public class EqController {
             return new ResponseEntity<>("That equation is meh", HttpStatus.valueOf(400));
         }
 
-        if (session.getAttribute("equation"))
+        if (s.getAttribute("equation"))
         {
             s.setAttribute("equation", eq);
             return new ResponseEntity<>("Corrected an equation", HttpStatus.valueOf(200));

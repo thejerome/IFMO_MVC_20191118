@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 @Controller
 public class ResController {
 
-    private string prepareYourself(Map<String, String> sesMap, Map<String, String> eqMap, String eq, HttpSession s) {
+    private String prepareYourself(Map<String, String> sesMap, Map<String, String> eqMap, String eq, HttpSession s) {
         Enumeration<String> responseStuff = s.getAttributeNames();
         while (responseStuff.hasMoreElements()) {
             String var = responseStuff.nextElement();
@@ -70,7 +70,7 @@ public class ResController {
     @GetMapping("/calc/result")
     public ResponseEntity<String> getResult(HttpSession s) {
         try {
-            if (!(s.getAttribute("equation")))
+            if ((s.getAttribute("equation"))==null)
                 throw new IllegalArgumentException("No such equation");
             String eq = s.getAttribute("equation").toString().replace(" ", "");
             Map<String, String> sesMap = new HashMap();

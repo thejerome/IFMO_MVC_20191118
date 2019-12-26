@@ -68,14 +68,14 @@ public class CountingThingy
                 i++;
             }
             String s = temp.toString();
-            return calculate(temp);
+            return calculate(polskaNotation(temp));
         }
         else
         {
             ///we fucked up
         }
     }
-    public static boolean checkIfGood (String val)
+    public static boolean checkIfVarGood (String val)
     {
         if (((Integer.valueOf(val)*Integer.valueOf(val)<100000000)||((val.charAt(0) >= 'a' && val.charAt(0) <= 'z'))))
         {
