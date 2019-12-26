@@ -25,7 +25,7 @@ public class EqController {
     public ResponseEntity<String> putEq(HttpSession s, @RequestBody String eq)
     {
 
-        if (!checkIfGood(eq))
+        if (checkIfGood(eq)==null)
         {
             return new ResponseEntity<>("That equation is meh", HttpStatus.valueOf(400));
         }
