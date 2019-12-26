@@ -24,15 +24,15 @@ public class EqController {
     public ResponseEntity<String> putEquation(HttpSession s, @RequestBody String eq) {
 
         if (!ifEqCorrect(eq))
-            return new ResponseEntity<>("That was  a bad thingy", HttpStatus.valueOf(400));
+            return new ResponseEntity<>(HttpStatus.valueOf(400));
 
         if (s.getAttribute("equation") != null) {
             s.setAttribute("equation", eq);
-            return new ResponseEntity<>("Replaced an equation", HttpStatus.valueOf(200));
+            return new ResponseEntity<>(HttpStatus.valueOf(200));
         }
         else {
             s.setAttribute("equation", eq);
-            return new ResponseEntity<>("Created an equation", HttpStatus.valueOf(201));
+            return new ResponseEntity<>(HttpStatus.valueOf(201));
         }
     }
     public static boolean ifCorrect(String s)
@@ -49,7 +49,7 @@ public class EqController {
     @DeleteMapping("/calc/eq")
     public ResponseEntity deleteEquation(HttpSession s){
         s.removeAttribute("equation");
-        return new ResponseEntity<>("Wiped out, diverged to atoms", HttpStatus.valueOf(204));
+        return new ResponseEntity<>(HttpStatus.valueOf(204));
     }
 
 }

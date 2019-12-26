@@ -22,14 +22,14 @@ public class VarController {
     @PutMapping("/calc/{n}")
     public ResponseEntity<String> putVariable(HttpSession s, @PathVariable String n, @RequestBody String val) {
         if (!ifCorrect(val))
-            return new ResponseEntity<>("That's a bad thingy", HttpStatus.valueOf(403));
+            return new ResponseEntity<>(HttpStatus.valueOf(403));
         if (s.getAttribute(n) != null) {
             s.setAttribute(n, val);
-            return new ResponseEntity<>("Replaced a variable", HttpStatus.valueOf(200));
+            return new ResponseEntity<>(HttpStatus.valueOf(200));
 
         } else {
             s.setAttribute(n, val);
-            return new ResponseEntity<>("Created a variable", HttpStatus.valueOf(201));
+            return new ResponseEntity<>(HttpStatus.valueOf(201));
         }
     }
     public static boolean ifEqCorrect (String s)
@@ -46,6 +46,6 @@ public class VarController {
     @DeleteMapping("/calc/{n}")
     public ResponseEntity deleteVariable(HttpSession s, @PathVariable String n) {
         s.removeAttribute(n);
-        return new ResponseEntity<>("Efimchik forces me to use java, please help",HttpStatus.valueOf(204));
+        return new ResponseEntity<>(HttpStatus.valueOf(204));
     }
 }
