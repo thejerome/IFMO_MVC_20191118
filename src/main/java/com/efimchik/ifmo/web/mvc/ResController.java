@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Controller
-public class ResultController {
+public class ResController {
 
-    public static boolean ifCorrect(String s)
+    public static bool ifCorrect(String s)
     {
         if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
         {
@@ -46,7 +46,7 @@ public class ResultController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.valueOf(409));
         }
     }
-    public static boolean ifEqCorrect (String s)
+    public static bool ifEqCorrect (String s)
     {
         if (s.indexOf('*') != -1 || s.indexOf('/') != -1 || s.indexOf('+') != -1 || s.indexOf('-') !=-1)
         {
@@ -85,9 +85,9 @@ public class ResultController {
                 var.setValue(val);
             }
     }
-    public static boolean ifCorrectCh(String s)
+    public static bool ifCorrectCh(char s)
     {
-        if (((s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
+        if (((s >= 'a' && s <= 'z')))
         {
             return true;
         }

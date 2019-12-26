@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class EqController {
-    public static boolean ifEqCorrect (tring s)
+    public static boolean ifEqCorrect (String s)
     {
         if (s.indexOf('*') != -1 || s.indexOf('/') != -1 || s.indexOf('+') != -1 || s.indexOf('-') != -1)
         {
@@ -51,15 +51,5 @@ public class EqController {
         s.removeAttribute("equation");
         return new ResponseEntity<>("Wiped out, diverged to atoms", HttpStatus.valueOf(204));
     }
-    public static boolean ifCorrect(String s)
-    {
-        if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
-        {
-            return true;
-        }
-        else
-        {
-            return  false;
-        }
-    }
+
 }

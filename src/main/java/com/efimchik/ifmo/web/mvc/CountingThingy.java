@@ -118,7 +118,7 @@ public class CountingThingy {
         }
     }
     public static int process(String toCalc) {
-        StringBuffer temp = new StringBuffer('(' + eq + ')');
+        StringBuffer temp = new StringBuffer('(' + toCalc + ')');
 
         int i = 1;
         while (i < temp.length()) {
