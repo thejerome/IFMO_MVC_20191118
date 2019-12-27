@@ -57,10 +57,10 @@ public class EmployeeRestController {
                                                          @RequestParam(required = false) Integer size,
                                                          @RequestParam(required = false) String sort) throws SQLException {
 
-        sort = changeToColumnName(sort);
+        String fixedSort = changeToColumnName(sort);
         String sql = "SELECT * FROM EMPLOYEE WHERE manager = " +
                 managerId +
-                ((sort != null) ? " ORDER BY " + sort : " ") +
+                ((sort != null) ? " ORDER BY " + fixedSort : " ") +
                 ((size != null) ? " LIMIT " + size : " ") +
                 ((page != null) ? " OFFSET " + size * page : " ");
         List<Employee> entities = EmployeeServiceUtil.getAllEmployeesSorted(false, true, sql);
