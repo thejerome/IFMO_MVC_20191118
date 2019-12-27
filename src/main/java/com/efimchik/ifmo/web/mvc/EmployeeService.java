@@ -69,7 +69,7 @@ public class EmployeeService {
     }
 
     private static Employee getEmployee(ResultSet rs, boolean chain, boolean managerNeeded) throws SQLException {
-        BigInteger id = new BigInteger(rs.getString("id"));
+        Long id = Long. parseLong(rs.getString("id"));
         FullName fullName = new FullName(
                 rs.getString("firstName"),
                 rs.getString("lastName"),
@@ -91,14 +91,14 @@ public class EmployeeService {
         }
         Department department = null;
         if (rs.getObject("department") != null) {
-            BigInteger departmentId = BigInteger.valueOf(rs.getInt("department"));
+            Long departmentId = Long.parseLong(rs.getString("department"));
             department = getDepartmentById(departmentId);
         }
         return new Employee(id, fullName, position, date, salary, manager, department);
     }
 
     public static Department getDepartment(ResultSet rs) throws SQLException {
-        BigInteger id = new BigInteger(rs.getString("id"));
+        Long id = Long. parseLong(rs.getString("id"));
         String name = rs.getString("name");
         String location = rs.getString("location");
         return new Department(id, name, location);
@@ -122,7 +122,7 @@ public class EmployeeService {
         }
     }
 
-    public static Department getDepartmentById(BigInteger id) {
+    public static Department getDepartmentById(Long id) {
         Connection con = null;
         Statement stmt = null;
         try {
