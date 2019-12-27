@@ -14,6 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Service {
+    public static List<Employee> getNeededList (Integer page, Integer size, List<Employee> ans){
+        if (page != null && size != null){
+            int from = page * size;
+            int to = ((page + 1) * size < ans.size())? (page + 1) * size : ans.size();
+            return ans.subList(from, to);
+        }else{
+            return ans;
+        }
+    }
+
     public static List<Employee> getListOfEmployee(String sort){
         try{
             ResultSet rs;
@@ -110,17 +120,14 @@ public class Service {
         );
     }
 
-    private static Department departmentMapRow(Long id) {
-        try{
-            ResultSet rs = giveMeResultSet("SELECT * FROM DEPARTMENT WHERE ID = " + id);
-            if (rs.next()) {
-                return new Department(id,
-                        rs.getString("Name"),
-                        rs.getString("Location"));
-            }else {
-                return null;
-            }
-        }catch(SQLException e){
+    private static Department departmentMapRow(Long id) throws SQLException {
+        ResultSet rs = giveMeResultSet("SELECT * FROM DEPARTMENT WHERE ID = " + id);
+        if (rs.next()) {
+            return new Department(
+                    rs.getLong("id"),
+                    rs.getString("name"),
+                    rs.getString("location"));
+        }else {
             return null;
         }
     }
