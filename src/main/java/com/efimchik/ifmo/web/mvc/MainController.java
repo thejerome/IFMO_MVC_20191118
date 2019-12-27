@@ -13,30 +13,31 @@ import java.util.Optional;
 
 @RestController
 public class MainController {
-    ConnectionSource connectionSource = ConnectionSource.instance();
-    EmployeeService employeeService = new EmployeeService();
+    private ConnectionSource connectionSource = ConnectionSource.instance();
+    private EmployeeService employeeService = new EmployeeService();
 
     @GetMapping("/employees")
-    List<Employee> getAll(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
-                          @RequestParam(required = false) String sort) throws SQLException {
+    private List<Employee> getAll(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
+                                  @RequestParam(required = false) String sort) throws SQLException {
         if (sort != null && sort.equals("hired"))
-            sort = "hiredate";
+            sort += "ate";
         String query = "select * from employee";
-        if (sort != null){
+        if (sort != null) {
             query += " order by " + sort;
         }
-        if (size != null){
-            query += " limit " + size + " offset " + size*page;
+        if (size != null) {
+            query += " limit " + size + " offset " + size * page;
         }
-        ResultSet rs = employeeService.ResultSet(query);
+        ResultSet rs = employeeService.resultSet(query);
         return employeeService.getEmployeeListWithoutChain(rs);
     }
 
+
     @GetMapping("/employees/{id}")
-    Optional<Employee> getById(@PathVariable Long id, @RequestParam(required = false, defaultValue = "false") String full_chain) throws SQLException {
-        String query = "select * from employee where id="+id;
-        ResultSet rs = employeeService.ResultSet(query);
-        if (full_chain.equals("false")){
+    private Optional<Employee> getById(@PathVariable Long id, @RequestParam(required = false, defaultValue = "false") String full_chain) throws SQLException {
+        String query = "select * from employee where id=" + id;
+        ResultSet rs = employeeService.resultSet(query);
+        if ("false".equals(full_chain)) {
             return Optional.of(employeeService.getEmployeeListWithoutChain(rs).get(0));
         } else {
             return Optional.of(employeeService.getEmployeeListWithChain(rs).get(0));
@@ -44,45 +45,45 @@ public class MainController {
     }
 
     @GetMapping("/employees/by_manager/{managerId}")
-    List<Employee> getByManager(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
-                          @RequestParam(required = false) String sort, @PathVariable Long managerId) throws SQLException {
+    private List<Employee> getByManager(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
+                                        @RequestParam(required = false) String sort, @PathVariable Long managerId) throws SQLException {
         if (sort != null && sort.equals("hired"))
-            sort = "hiredate";
-        String query = "select * from employee where manager="+managerId;
-        if (sort != null){
+            sort += "ate";
+        String query = "select * from employee where manager=" + managerId;
+        if (sort != null) {
             query += " order by " + sort;
         }
-        if (size != null){
-            query += " limit " + size + " offset " + size*page;
+        if (size != null) {
+            query += " limit " + size + " offset " + size * page;
         }
-        ResultSet rs = employeeService.ResultSet(query);
+        ResultSet rs = employeeService.resultSet(query);
         return employeeService.getEmployeeListWithoutChain(rs);
     }
 
     @GetMapping("/employees/by_department/{depNameOrId}")
-    List<Employee> getByManager(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
-                                @RequestParam(required = false) String sort, @PathVariable String depNameOrId) throws SQLException {
+    private List<Employee> getByManager(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
+                                        @RequestParam(required = false) String sort, @PathVariable String depNameOrId) throws SQLException {
         if (sort != null && sort.equals("hired"))
-            sort = "hiredate";
+            sort += "ate";
         String query = "select * from employee";
-        if (numeric(depNameOrId)){
-            query += " where department="+depNameOrId;
+        if (numeric(depNameOrId)) {
+            query += " where department=" + depNameOrId;
         } else {
             query += " join department dep on employee.department=dep.id where dep.name='" + depNameOrId + "'";
         }
-        if (sort != null){
+        if (sort != null) {
             query += " order by " + sort;
         }
-        if (size != null){
-            query += " limit " + size + " offset " + size*page;
+        if (size != null) {
+            query += " limit " + size + " offset " + size * page;
         }
-        ResultSet rs = employeeService.ResultSet(query);
+        ResultSet rs = employeeService.resultSet(query);
         return employeeService.getEmployeeListWithoutChain(rs);
     }
 
     private boolean numeric(String s) {
-        for (char c : s.toCharArray()){
-            if (!(c >= '0' && c <='9'))
+        for (char c : s.toCharArray()) {
+            if (!(c >= '0' && c <= '9'))
                 return false;
         }
         return true;

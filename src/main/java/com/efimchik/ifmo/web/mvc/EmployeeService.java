@@ -16,13 +16,13 @@ import java.util.List;
 
 class EmployeeService {
 
-    ResultSet ResultSet(String s) throws SQLException {
+    public ResultSet resultSet(String s) throws SQLException {
         ConnectionSource connectionSource = ConnectionSource.instance();
         Connection connection = connectionSource.createConnection();
         return connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(s);
     }
 
-    List<Employee> getEmployeeListWithoutChain(ResultSet rs) throws SQLException {
+    public List<Employee> getEmployeeListWithoutChain(ResultSet rs) throws SQLException {
         rs.beforeFirst();
         List<Employee> ans = new LinkedList<>();
         while (rs.next()) {
@@ -31,7 +31,7 @@ class EmployeeService {
         return ans;
     }
 
-    List<Employee> getEmployeeListWithChain(ResultSet rs) throws SQLException {
+    public List<Employee> getEmployeeListWithChain(ResultSet rs) throws SQLException {
         rs.beforeFirst();
         List<Employee> ans = new LinkedList<>();
         while (rs.next()) {
@@ -43,7 +43,7 @@ class EmployeeService {
 
     private Department getDepartmentById(BigInteger Id) {
         try {
-            ResultSet res = ResultSet("select * from department where id = " + Id);
+            ResultSet res = resultSet("select * from department where id = " + Id);
             return getDepartmentListByResultSet(res).get(0);
         } catch (SQLException e) {
             return null;
@@ -123,7 +123,7 @@ class EmployeeService {
 
     private Employee getEmployeeByIdWithFullChain(BigInteger Id) {
         try {
-            ResultSet res = ResultSet("select * from employee where id = " + Id);
+            ResultSet res = resultSet("select * from employee where id = " + Id);
             res.next();
             return employeeRowMapperWithChain(res);
         } catch (SQLException e) {
@@ -133,9 +133,11 @@ class EmployeeService {
 
     private Employee getEmployeeByIdWithoutChain(BigInteger Id) {
         try {
-            ResultSet res = ResultSet("select * from employee where id = " + Id);
-            res.next();
-            return employeeRowMapperWithoutChain(res, false);
+            ResultSet res = resultSet("select * from employee where id = " + Id);
+            if (res.next())
+                return employeeRowMapperWithoutChain(res, false);
+            else
+                return null;
         } catch (SQLException e) {
             return null;
         }
