@@ -20,7 +20,7 @@ public class EqController {
             return false;
         }
     }
-    @PutMapping("/calc/eq")
+    @PutMapping("/calc/equation")
     public ResponseEntity<String> putEquation(HttpSession s, @RequestBody String eq) {
 
         if (!ifEqCorrect(eq))
@@ -46,7 +46,7 @@ public class EqController {
             return  false;
         }
     }
-    @DeleteMapping("/calc/eq")
+    @DeleteMapping("/calc/equation")
     public ResponseEntity deleteEquation(HttpSession s){
         s.removeAttribute("equation");
         return new ResponseEntity<>(HttpStatus.valueOf(204));
