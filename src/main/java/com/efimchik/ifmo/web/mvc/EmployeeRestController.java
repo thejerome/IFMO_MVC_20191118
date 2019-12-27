@@ -3,7 +3,12 @@ package com.efimchik.ifmo.web.mvc;
 import com.efimchik.ifmo.web.mvc.domain.Employee;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.math.BigInteger;
 import java.sql.SQLException;
@@ -24,12 +29,12 @@ public class EmployeeRestController {
     public ResponseEntity<List<Employee>> getAll(@RequestParam(required = false) Integer page,
                                                  @RequestParam(required = false) Integer size,
                                                  @RequestParam(required = false) String sort) throws SQLException {
-        sort = changeToColumnName(sort);
+        String fixedSort = changeToColumnName(sort);
         String sql = "SELECT * FROM EMPLOYEE" +
-                ((sort != null) ? " ORDER BY " + sort : " ") +
+                ((sort != null) ? " ORDER BY " + fixedSort : " ") +
                 ((size != null) ? " LIMIT " + size : " ") +
                 ((page != null) ? " OFFSET " + size * page : " ");
-        List<Employee> entities = EmployeeService.getAllEmployeesSorted(false, true, sql);
+        List<Employee> entities = EmployeeServiceUtil.getAllEmployeesSorted(false, true, sql);
             return ResponseEntity.ok(entities);
     }
 
@@ -39,9 +44,9 @@ public class EmployeeRestController {
                                             @RequestParam(name = "full_chain", required = false, defaultValue = "false") String fullChain) throws SQLException {
         String sql = "SELECT * FROM EMPLOYEE WHERE id = " + employeeId;
         if ("true".equals(fullChain)) {
-            return ResponseEntity.ok(EmployeeService.getAllEmployeesSorted(true, true, sql).get(0));
+            return ResponseEntity.ok(EmployeeServiceUtil.getAllEmployeesSorted(true, true, sql).get(0));
         } else {
-            return ResponseEntity.ok(EmployeeService.getAllEmployeesSorted(false, true, sql).get(0));
+            return ResponseEntity.ok(EmployeeServiceUtil.getAllEmployeesSorted(false, true, sql).get(0));
         }
     }
 
@@ -58,7 +63,7 @@ public class EmployeeRestController {
                 ((sort != null) ? " ORDER BY " + sort : " ") +
                 ((size != null) ? " LIMIT " + size : " ") +
                 ((page != null) ? " OFFSET " + size * page : " ");
-        List<Employee> entities = EmployeeService.getAllEmployeesSorted(false, true, sql);
+        List<Employee> entities = EmployeeServiceUtil.getAllEmployeesSorted(false, true, sql);
         return ResponseEntity.ok(entities);
     }
 
@@ -68,21 +73,21 @@ public class EmployeeRestController {
                                                      @RequestParam(required = false) Integer page,
                                                      @RequestParam(required = false) Integer size,
                                                      @RequestParam(required = false) String sort) throws SQLException {
-        sort = changeToColumnName(sort);
+        String fixedSort = changeToColumnName(sort);
 
         BigInteger depId = null;
         if(!isNumeric(depIdOrDepName)) {
             String query = "SELECT id FROM DEPARTMENT WHERE name = '" + depIdOrDepName + "'";
-            depId = EmployeeService.getDepartmentIdByName(query);
+            depId = EmployeeServiceUtil.getDepartmentIdByName(query);
         } else {
             depId = BigInteger.valueOf(Integer.parseInt(depIdOrDepName));
         }
         String sql = "SELECT * FROM EMPLOYEE WHERE department = " +
                 depId +
-                ((sort != null) ? " ORDER BY " + sort : " ") +
+                ((sort != null) ? " ORDER BY " + fixedSort : " ") +
                 ((size != null) ? " LIMIT " + size : " ") +
                 ((page != null) ? " OFFSET " + size * page : " ");
-        List<Employee> entities = EmployeeService.getAllEmployeesSorted(false, true, sql);
+        List<Employee> entities = EmployeeServiceUtil.getAllEmployeesSorted(false, true, sql);
         return ResponseEntity.ok(entities);
 
     }
@@ -99,7 +104,7 @@ public class EmployeeRestController {
             return false;
         }
         try {
-            Integer num = Integer.parseInt(str);
+            Integer.parseInt(str);
         } catch (NumberFormatException e) {
             return false;
         }

@@ -14,9 +14,8 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiFunction;
 
-public class EmployeeService {
+public class EmployeeServiceUtil {
 
     private static Connection createConnection() throws SQLException {
         DBConnection connectionSource = DBConnection.getInstance();
@@ -79,14 +78,12 @@ public class EmployeeService {
         LocalDate date = LocalDate.parse(rs.getString("hireDate"));
         BigDecimal salary = rs.getBigDecimal("salary");
         Employee manager = null;
-        if (rs.getObject("manager") != null) {
-            if (chain || managerNeeded) {
-                BigInteger managerId = new BigInteger(rs.getString("manager"));
-                if (chain) {
-                    manager = getAllEmployeesSorted(true, false, "SELECT * FROM employee WHERE id=" + managerId).get(0);
-                } else {
-                    manager = getAllEmployeesSorted(false, false, "SELECT * FROM employee WHERE id=" + managerId).get(0);
-                }
+        if (rs.getObject("manager") != null && (chain || managerNeeded)) {
+            BigInteger managerId = new BigInteger(rs.getString("manager"));
+            if (chain) {
+                manager = getAllEmployeesSorted(true, false, "SELECT * FROM employee WHERE id=" + managerId).get(0);
+            } else {
+                manager = getAllEmployeesSorted(false, false, "SELECT * FROM employee WHERE id=" + managerId).get(0);
             }
         }
         Department department = null;
@@ -111,8 +108,11 @@ public class EmployeeService {
             con = createConnection();
             stmt = con.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
-            resultSet.next();
-            return new BigInteger(resultSet.getString("id"));
+            if (resultSet.next()) {
+                return new BigInteger(resultSet.getString("id"));
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
