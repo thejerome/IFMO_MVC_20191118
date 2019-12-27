@@ -14,6 +14,7 @@ public class ResController {
 
     public static boolean ifCorrect(String s)
     {
+
         if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
         {
             return true;
