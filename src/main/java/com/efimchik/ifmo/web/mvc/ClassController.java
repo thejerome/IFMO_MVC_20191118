@@ -22,13 +22,14 @@ import java.util.List;
 @Controller
 public class ClassController {
 
-    static {
-        try {
-            Class.forName("org.h2.Driver");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+    private List<Department> departmentList = getDepartmentList();
+    private List<Employee> employeeList(ResultSet resultSet) {
+        return getEmployeeList(resultSet, true);
     }
+    private List<Employee> employeeListWithShortChain(ResultSet resultSet) {
+        return getEmployeeList(resultSet, false);
+    }
+
 
     private ResultSet getResultSet(String sql) {
         try {
@@ -40,8 +41,6 @@ public class ClassController {
         }
     }
 
-
-    private List<Department> departmentList = getDepartmentList();
 
     private List<Department> getDepartmentList() {
         try {
@@ -77,12 +76,6 @@ public class ClassController {
         return resultDep;
     }
 
-    private List<Employee> employeeList(ResultSet resultSet) {
-        return getEmployeeList(resultSet, true);
-    }
-    private List<Employee> employeeListWithShortChain(ResultSet resultSet) {
-        return getEmployeeList(resultSet, false);
-    }
 
     private List<Employee> getEmployeeList(ResultSet resultSet, boolean chain) {
         try {
@@ -135,6 +128,16 @@ public class ClassController {
                 department);
     }
 
+
+    static {
+        try {
+            Class.forName("org.h2.Driver");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getEmployees(@RequestParam(required = false) Integer size,
                                                        @RequestParam(required = false) Integer page,
@@ -154,7 +157,7 @@ public class ClassController {
                                                     @PathVariable Integer id) {
         ResultSet resultSet = getResultSet("select * from employee" +
                 " where id = " + id);
-        if (!fullChain.isEmpty() && fullChain.equals("true")) {
+        if (!fullChain.isEmpty() && "true".equals(fullChain)) {
             return new ResponseEntity<>(employeeList(resultSet).get(0), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(employeeListWithShortChain(resultSet).get(0), HttpStatus.OK);
