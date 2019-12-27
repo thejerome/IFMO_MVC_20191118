@@ -64,30 +64,31 @@ public class Controller {
                                                    @RequestParam(required = false) Integer page,
                                                    @RequestParam(required = false) Integer size,
                                                    @RequestParam(required = false) String sort){
+        String mysort = sort;
         if ("hired".equals(sort)){
-            sort = "HIREDATE";
+            mysort = "HIREDATE";
         }
         List<Employee> ans;
         if ("ACCOUNTING".equals(department)){
             ans = Service.getListOfEmployeeById("department",
                     Integer.valueOf("10"),
-                    false, sort);
+                    false, mysort);
         }else if ("RESEARCH".equals(department)){
             ans = Service.getListOfEmployeeById("department",
                     Integer.valueOf("20"),
-                    false, sort);
+                    false, mysort);
         }else if ("SALES".equals(department)){
             ans = Service.getListOfEmployeeById("department",
                     Integer.valueOf("30"),
-                    false, sort);
+                    false, mysort);
         }else if ("OPERATIONS".equals(department)){
             ans = Service.getListOfEmployeeById("department",
                     Integer.valueOf("40"),
-                    false, sort);
+                    false, mysort);
         }else{
             ans = Service.getListOfEmployeeById("department",
                     Integer.valueOf(department),
-                    false, sort);
+                    false, mysort);
         }
         return Service.getNeededList(page, size, ans);
     }
