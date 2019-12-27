@@ -93,7 +93,7 @@ public class ControllerAndSomethingElse {
         try {
             Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -120,7 +120,7 @@ public class ControllerAndSomethingElse {
                     ResultSet newResultSet = newResultSet("select * from employee");
                     while (newResultSet.next()) {
                         if (newResultSet.getString("id").equals(resultSet.getString("manager"))) {
-                            manager = newEmployee(newResultSet, false, ++level);
+                            manager = newEmployee(newResultSet, false, level + 1);
                             break;
                         }
                     }
@@ -196,9 +196,8 @@ public class ControllerAndSomethingElse {
 
     private ResponseEntity<List<Employee>> newResponseEntity(String SqlQuery, Integer size, Integer page, String sort) {
         if (sort != null && sort.equals("hired")) {
-            sort = "hiredate";
-        }
-        if (sort != null) {
+            SqlQuery += " order by hiredate";
+        } else if (sort != null) {
             SqlQuery += " order by " + sort;
         }
         if (page == null) {
