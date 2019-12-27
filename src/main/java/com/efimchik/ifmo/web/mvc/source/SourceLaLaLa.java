@@ -21,7 +21,7 @@ public class SourceLaLaLa {
         try {
             Class.forName("org.h2.Driver");
         } catch ( ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }//*/
 

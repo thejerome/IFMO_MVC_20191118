@@ -114,9 +114,9 @@ public class Service {
         try{
             ResultSet rs = giveMeResultSet("SELECT * FROM DEPARTMENT WHERE ID = " + id);
             if (rs.next()) {
-                String fullName = rs.getString("Name");
-                String position = rs.getString("Location");
-                return new Department(id, fullName, position);
+                return new Department(id,
+                        rs.getString("Name"),
+                        rs.getString("Location"));
             }else {
                 return null;
             }
