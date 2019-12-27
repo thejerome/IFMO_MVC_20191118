@@ -4,7 +4,7 @@ import com.efimchik.ifmo.web.mvc.domain.Department;
 import com.efimchik.ifmo.web.mvc.domain.Employee;
 import com.efimchik.ifmo.web.mvc.domain.FullName;
 import com.efimchik.ifmo.web.mvc.domain.Position;
-import com.efimchik.ifmo.web.mvc.source.SourceLaLaLa;
+import com.efimchik.ifmo.web.mvc.source.ConnectionSource;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -18,6 +18,9 @@ public class Service {
         if (page != null && size != null){
             int from = page * size;
             int to = ((page + 1) * size < ans.size())? (page + 1) * size : ans.size();
+            if (from > to){
+                return new ArrayList<>();
+            }
             return ans.subList(from, to);
         }else{
             return ans;
@@ -84,7 +87,7 @@ public class Service {
             }
             if (!resultSet.isAfterLast()){//if found
                 if (isFull_chain){
-                    manager = getEmployee(resultSet, true);
+                    manager = getEmployee(resultSet, isFull_chain);
                 }else{
                     manager = new Employee(
                             Long.valueOf(resultSet.getString("id")),
@@ -133,7 +136,7 @@ public class Service {
     }
 
     private static ResultSet giveMeResultSet(String query) throws SQLException {
-        return SourceLaLaLa.getInstance()
+        return ConnectionSource.getInstance()
                 .createConnection()
                 .createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)
                 .executeQuery(query);

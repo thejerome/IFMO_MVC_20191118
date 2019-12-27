@@ -15,6 +15,9 @@ public class Controller {
     public List<Employee> employees(@RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer size,
                                     @RequestParam(required = false) String sort){
+        if ("hired".equals(sort)){
+            sort = "HIREDATE";
+        }
         List<Employee> ans = Service.getListOfEmployee(sort);
 
         return Service.getNeededList(page, size, ans);
@@ -22,12 +25,15 @@ public class Controller {
 
     @GetMapping("/employees/{employee_id:[\\d]+}")
     public Employee employee(@PathVariable int employee_id,
-                             @RequestParam(required = false) Boolean isFull_chain,
+                             @RequestParam(required = false) Boolean full_chain,
                              @RequestParam(required = false) String sort){
+        if ("hired".equals(sort)){
+            sort = "HIREDATE";
+        }
         List<Employee> ans =  Service.getListOfEmployeeById(
                 "id",
                 employee_id,
-                isFull_chain,
+                full_chain,
                 sort);
         if (ans != null){
             return ans.get(0);
@@ -42,6 +48,9 @@ public class Controller {
                                             @RequestParam(required = false) Integer page,
                                             @RequestParam(required = false) Integer size,
                                             @RequestParam(required = false) String sort){
+        if ("hired".equals(sort)){
+            sort = "HIREDATE";
+        }
         List<Employee> ans = Service.getListOfEmployeeById(
                 "manager",
                 managerId,
@@ -55,6 +64,9 @@ public class Controller {
                                                    @RequestParam(required = false) Integer page,
                                                    @RequestParam(required = false) Integer size,
                                                    @RequestParam(required = false) String sort){
+        if ("hired".equals(sort)){
+            sort = "HIREDATE";
+        }
         List<Employee> ans;
         if ("ACCOUNTING".equals(department)){
             ans = Service.getListOfEmployeeById("department",

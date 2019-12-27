@@ -5,11 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-public class SourceLaLaLa {
+public class ConnectionSource {
     private static final String DB_URL = "jdbc:h2:mem:testdb";
-    private static final SourceLaLaLa instance = new SourceLaLaLa();
+    private static final ConnectionSource instance = new ConnectionSource();
 
-    public static SourceLaLaLa getInstance() {
+    public static ConnectionSource getInstance() {
         return instance;
     }//*/
 
@@ -17,7 +17,7 @@ public class SourceLaLaLa {
         return DriverManager.getConnection(DB_URL, "SA", "");
     }
 
-    private SourceLaLaLa() {
+    private ConnectionSource() {
         try {
             Class.forName("org.h2.Driver");
         } catch ( ClassNotFoundException e) {
