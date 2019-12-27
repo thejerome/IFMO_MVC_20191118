@@ -15,10 +15,7 @@ public class Controller {
     public List<Employee> employees(@RequestParam(required = false) Integer page,
                                     @RequestParam(required = false) Integer size,
                                     @RequestParam(required = false) String sort){
-        if ("hired".equals(sort)){
-            sort = "HIREDATE";
-        }
-        List<Employee> ans = Service.getListOfEmployee(sort);
+        List<Employee> ans = Service.getListOfEmployee(("hired".equals(sort))? "HIREDATE" : sort);
 
         return Service.getNeededList(page, size, ans);
     }
@@ -27,14 +24,11 @@ public class Controller {
     public Employee employee(@PathVariable int employee_id,
                              @RequestParam(required = false) Boolean full_chain,
                              @RequestParam(required = false) String sort){
-        if ("hired".equals(sort)){
-            sort = "HIREDATE";
-        }
         List<Employee> ans =  Service.getListOfEmployeeById(
                 "id",
                 employee_id,
                 full_chain,
-                sort);
+                ("hired".equals(sort))? "HIREDATE" : sort);
         if (ans != null){
             return ans.get(0);
         }else{
@@ -48,14 +42,11 @@ public class Controller {
                                             @RequestParam(required = false) Integer page,
                                             @RequestParam(required = false) Integer size,
                                             @RequestParam(required = false) String sort){
-        if ("hired".equals(sort)){
-            sort = "HIREDATE";
-        }
         List<Employee> ans = Service.getListOfEmployeeById(
                 "manager",
                 managerId,
                 false,
-                sort);
+                ("hired".equals(sort))? "HIREDATE" : sort);
         return Service.getNeededList(page, size, ans);
     }
 
