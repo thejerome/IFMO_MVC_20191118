@@ -13,17 +13,17 @@ import java.util.Optional;
 
 @RestController
 public class MainController {
-    private ConnectionSource connectionSource = ConnectionSource.instance();
     private EmployeeService employeeService = new EmployeeService();
 
     @GetMapping("/employees")
-    private List<Employee> getAll(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
+    public List<Employee> getAll(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
                                   @RequestParam(required = false) String sort) throws SQLException {
+        String realSort = sort;
         if (sort != null && sort.equals("hired"))
-            sort += "ate";
+            realSort = "hiredate";
         String query = "select * from employee";
-        if (sort != null) {
-            query += " order by " + sort;
+        if (realSort != null) {
+            query += " order by " + realSort;
         }
         if (size != null) {
             query += " limit " + size + " offset " + size * page;
@@ -34,7 +34,7 @@ public class MainController {
 
 
     @GetMapping("/employees/{id}")
-    private Optional<Employee> getById(@PathVariable Long id, @RequestParam(required = false, defaultValue = "false") String full_chain) throws SQLException {
+    public Optional<Employee> getById(@PathVariable Long id, @RequestParam(required = false, defaultValue = "false") String full_chain) throws SQLException {
         String query = "select * from employee where id=" + id;
         ResultSet rs = employeeService.resultSet(query);
         if ("false".equals(full_chain)) {
@@ -45,13 +45,14 @@ public class MainController {
     }
 
     @GetMapping("/employees/by_manager/{managerId}")
-    private List<Employee> getByManager(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
+    public List<Employee> getByManager(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
                                         @RequestParam(required = false) String sort, @PathVariable Long managerId) throws SQLException {
+        String realSort = sort;
         if (sort != null && sort.equals("hired"))
-            sort += "ate";
+            realSort = "hiredate";
         String query = "select * from employee where manager=" + managerId;
-        if (sort != null) {
-            query += " order by " + sort;
+        if (realSort != null) {
+            query += " order by " + realSort;
         }
         if (size != null) {
             query += " limit " + size + " offset " + size * page;
@@ -61,18 +62,19 @@ public class MainController {
     }
 
     @GetMapping("/employees/by_department/{depNameOrId}")
-    private List<Employee> getByManager(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
+    public List<Employee> getByManager(@RequestParam(required = false) Integer size, @RequestParam(required = false) Integer page,
                                         @RequestParam(required = false) String sort, @PathVariable String depNameOrId) throws SQLException {
+        String realSort = sort;
         if (sort != null && sort.equals("hired"))
-            sort += "ate";
+            realSort = "hiredate";
         String query = "select * from employee";
         if (numeric(depNameOrId)) {
             query += " where department=" + depNameOrId;
         } else {
             query += " join department dep on employee.department=dep.id where dep.name='" + depNameOrId + "'";
         }
-        if (sort != null) {
-            query += " order by " + sort;
+        if (realSort != null) {
+            query += " order by " + realSort;
         }
         if (size != null) {
             query += " limit " + size + " offset " + size * page;

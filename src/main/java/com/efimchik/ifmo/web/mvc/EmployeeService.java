@@ -124,8 +124,10 @@ class EmployeeService {
     private Employee getEmployeeByIdWithFullChain(BigInteger Id) {
         try {
             ResultSet res = resultSet("select * from employee where id = " + Id);
-            res.next();
-            return employeeRowMapperWithChain(res);
+            if (res.next())
+                return employeeRowMapperWithChain(res);
+            else
+                return null;
         } catch (SQLException e) {
             return null;
         }
