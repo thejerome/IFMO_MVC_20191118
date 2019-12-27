@@ -1,5 +1,6 @@
 package com.efimchik.ifmo.web.mvc;
 
+import com.efimchik.ifmo.web.mvc.service.Service;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,12 +33,17 @@ public class MvcApplication {
     public Employee employee(@PathVariable int employee_id,
                              @RequestParam(required = false) Boolean isFull_chain,
                                    @RequestParam(required = false) String sort){
-            return Service.getListOfEmployeeById(
-                    "id",
-                    employee_id,
-                    isFull_chain,
-                    sort)
-                    .get(0);
+        List<Employee> ans =  Service.getListOfEmployeeById(
+                "id",
+                employee_id,
+                isFull_chain,
+                sort);
+        if (ans != null){
+            return ans.get(0);
+        }else{
+            return null;
+        }
+
     }
 
     @GetMapping("/employees/by_manager/{managerId:[\\d]+}")

@@ -1,12 +1,10 @@
-package com.efimchik.ifmo.web.mvc;
+package com.efimchik.ifmo.web.mvc.service;
 
 import com.efimchik.ifmo.web.mvc.domain.Department;
 import com.efimchik.ifmo.web.mvc.domain.Employee;
 import com.efimchik.ifmo.web.mvc.domain.FullName;
 import com.efimchik.ifmo.web.mvc.domain.Position;
 import com.efimchik.ifmo.web.mvc.source.SourceLaLaLa;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -30,7 +28,8 @@ public class Service {
             }
             return ans;
         }catch(SQLException e){
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -54,7 +53,8 @@ public class Service {
             }
             return ans;
         }catch(SQLException e){
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -113,10 +113,13 @@ public class Service {
     private static Department departmentMapRow(Long id) {
         try{
             ResultSet rs = giveMeResultSet("SELECT * FROM DEPARTMENT WHERE ID = " + id);
-            rs.next();
-            String fullName = rs.getString("Name");
-            String position = rs.getString("Location");
-            return new Department(id, fullName, position);
+            if (rs.next()) {
+                String fullName = rs.getString("Name");
+                String position = rs.getString("Location");
+                return new Department(id, fullName, position);
+            }else {
+                return null;
+            }
         }catch(SQLException e){
             return null;
         }
