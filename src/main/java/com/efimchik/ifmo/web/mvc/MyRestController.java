@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
 public class MyRestController {
 
     @GetMapping(value = "/employees", produces = "application/json")
-    private ResponseEntity<List<Employee>> getAllEmployee(@RequestParam(required = false) Integer page,
+    ResponseEntity<List<Employee>> getAllEmployee(@RequestParam(required = false) Integer page,
                                                           @RequestParam(required = false) Integer size,
                                                           @RequestParam(required = false) String sort) {
 
