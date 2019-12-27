@@ -94,6 +94,7 @@ public class ClassController {
 
 
     private Employee getEmployee(ResultSet resultSet, boolean chain, boolean firstManager) throws SQLException {
+        boolean firstManagerClone = firstManager;
         Long id = resultSet.getLong("id");
         FullName fullname = new FullName(
                 resultSet.getString("firstname"),
@@ -107,14 +108,14 @@ public class ClassController {
         Long departmentId = resultSet.getLong("department");
         Department department = getDepartmentById(departmentId);
         Employee manager = null;
-        if (managerId != null && firstManager) {
+        if (managerId != null && firstManagerClone) {
             if (!chain) {
-                firstManager = false;
+                firstManagerClone = false;
             }
             ResultSet newResultSet = getResultSet("select * from employee");
             while (newResultSet.next()) {
                 if (BigInteger.valueOf(newResultSet.getInt("id")).equals(managerId)) {
-                    manager = getEmployee(newResultSet, chain, firstManager);
+                    manager = getEmployee(newResultSet, chain, firstManagerClone);
                 }
             }
         }
@@ -142,11 +143,12 @@ public class ClassController {
     public ResponseEntity<List<Employee>> getEmployees(@RequestParam(required = false) Integer size,
                                                        @RequestParam(required = false) Integer page,
                                                        @RequestParam(required = false) String sort) {
+        String fixedSort = sort;
         if (sort != null && sort.equals("hired")) {
-            sort = "hiredate";
+            fixedSort = "hiredate";
         }
         ResultSet resultSet = getResultSet("select * from employee " +
-                ((sort != null) ? " order by " + sort : "") +
+                ((fixedSort != null) ? " order by " + fixedSort : "") +
                 ((size != null) ? " limit " + size : "") +
                 ((page != null && size != null) ? " offset " + size * page : ""));
         return new ResponseEntity<>(employeeListWithShortChain(resultSet), HttpStatus.OK);
@@ -169,12 +171,13 @@ public class ClassController {
                                                                 @RequestParam(required = false) Integer page,
                                                                 @RequestParam(required = false) String sort,
                                                                 @PathVariable Integer managerId) {
+        String fixedSort = sort;
         if (sort != null && sort.equals("hired")) {
-            sort = "hiredate";
+            fixedSort = "hiredate";
         }
         ResultSet resultSet = getResultSet("select * from employee" +
                 " where manager = " + managerId +
-                ((sort != null) ? " order by " + sort : "") +
+                ((fixedSort != null) ? " order by " + fixedSort : "") +
                 ((size != null) ? " limit " + size : "") +
                 ((page != null && size != null) ? " offset " + size * page : ""));
         return new ResponseEntity<>(employeeListWithShortChain(resultSet), HttpStatus.OK);
@@ -185,14 +188,15 @@ public class ClassController {
                                                                    @RequestParam(required = false) Integer page,
                                                                    @RequestParam(required = false) String sort,
                                                                    @PathVariable String department) {
+        String fixedSort = sort;
         if (sort != null && sort.equals("hired")) {
-            sort = "hiredate";
+            fixedSort = "hiredate";
         }
         try {
             Long departmentId = Long.valueOf(department);
             ResultSet resultSet = getResultSet("select * from employee" +
                     " where department = " + departmentId +
-                    ((sort != null) ? " order by " + sort : "") +
+                    ((fixedSort != null) ? " order by " + fixedSort : "") +
                     ((size != null) ? " limit " + size : "") +
                     ((page != null && size != null) ? " offset " + size * page : ""));
             return new ResponseEntity<>(employeeListWithShortChain(resultSet), HttpStatus.OK);
@@ -200,7 +204,7 @@ public class ClassController {
             ResultSet resultSet = getResultSet("select * from employee" +
                     " left join department on employee.department = department.id" +
                     " where department.name = '" + department + "'" +
-                    ((sort != null) ? " order by " + sort : "") +
+                    ((fixedSort != null) ? " order by " + fixedSort : "") +
                     ((size != null) ? " limit " + size : "") +
                     ((page != null && size != null) ? " offset " + size * page : ""));
             return new ResponseEntity<>(employeeListWithShortChain(resultSet), HttpStatus.OK);
