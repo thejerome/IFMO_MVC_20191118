@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-//@RequestMapping("/employees")
+@RequestMapping("/employees")
 public class Controller {
 
-    @GetMapping("/employees")
+    @GetMapping
     public static List<Employee> employees(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
@@ -20,13 +20,13 @@ public class Controller {
         return EmployeeService.getAllEmployees(page, size, sort);
     }
 
-    @GetMapping("/employees/{employee_id}")
+    @GetMapping("/{employee_id}")
     public static Employee employee(@PathVariable (name = "employee_id") String id,
                                     @RequestParam(name = "full_chain", required = false, defaultValue = "false") String needFull) throws SQLException {
         return EmployeeService.getEmployeeById(id, needFull);
     }
 
-    @GetMapping("/employees/by_manager/{managerId}")
+    @GetMapping("/by_manager/{managerId}")
     public static List<Employee> employeesByManager(@PathVariable() Long managerId,
                                                     @RequestParam(required = false) Integer page,
                                                     @RequestParam(required = false) Integer size,
@@ -34,7 +34,7 @@ public class Controller {
         sort = isHired(sort);
         return EmployeeService.getEmployeesByManager(managerId, page, size, sort);
     }
-    @GetMapping("/employees/by_department/{departmentName}")
+    @GetMapping("/by_department/{departmentName}")
     public static List<Employee> employeesByDepartment(@PathVariable() String departmentName,
                                                        @RequestParam(required = false) Integer page,
                                                        @RequestParam(required = false) Integer size,
@@ -46,10 +46,15 @@ public class Controller {
 
 
     public static String isHired(String sort){
-        if (sort.equals("hired")){
-            sort = "hiredate";
+        if (sort != null){
+            if (sort.equals("hired")){
+                sort = "hiredate";
+                return sort;
         }
-        return sort;
+            return sort;
+        }
+        return null;
+
     }
 
 

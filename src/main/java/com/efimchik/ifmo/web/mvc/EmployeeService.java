@@ -5,14 +5,12 @@ import com.efimchik.ifmo.web.mvc.domain.Employee;
 import com.efimchik.ifmo.web.mvc.domain.FullName;
 import com.efimchik.ifmo.web.mvc.domain.Position;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EmployeeService {
 
@@ -54,23 +52,28 @@ public class EmployeeService {
         if (page != null && size != null) {
             int first = page*size;
             int second = ((page + 1) * size < answer.size() ? (page + 1) * size : answer.size());
+            if(first>second){
+                return new ArrayList<>();
+            }
             answer = answer.subList(first,second);
         }
         return answer;
     }
 
     public static Employee getEmployeeById(String id, String needFull) throws SQLException {
-        String str = "select * from EMPLOYEE where id = "+ id;
+        String str = "select * from EMPLOYEE";
         Employee answer = null;
         ResultSet resultSet = getResultSet(str);
         resultSet.absolute(0);
-        if(needFull!= null && needFull.equals(true)) {
-            if (resultSet.next()) {
-                resultSet.absolute(1);
-                answer = getEmployee(resultSet, true);
-            }
+        while(resultSet.next()){
+            if(Integer.valueOf(id) == resultSet.getInt("id"))
+                break;
         }
-        else answer = getEmployee(resultSet, false);
+        if(needFull != null && needFull.equals("true")) {
+                answer = getEmployee(resultSet, true);
+        } else {
+            answer = getEmployee(resultSet, false);
+        }
         resultSet.close();
         return answer;
     }
