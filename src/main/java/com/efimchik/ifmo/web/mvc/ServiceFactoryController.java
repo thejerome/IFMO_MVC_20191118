@@ -69,7 +69,6 @@ public class ServiceFactoryController {
             Mapper mapper = new Mapper();
             id =  mapper.getDepartmentByName(departmentId_or_departmentName).getId();
         }
-        Mapper mapper = new Mapper();
 
         String request = "SELECT * FROM EMPLOYEE " +
                 "WHERE DEPARTMENT = " + id ;

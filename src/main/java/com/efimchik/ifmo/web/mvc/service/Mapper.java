@@ -94,7 +94,7 @@ public class Mapper {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM DEPARTMENT WHERE name = ?");
             statement.setString(1,name);
             ResultSet rs = statement.executeQuery();
-            rs.next();
+            if (rs.isBeforeFirst())rs.next();
             return getDepartmentById(rs.getInt("id"));
 
         } catch (SQLException exc) {
