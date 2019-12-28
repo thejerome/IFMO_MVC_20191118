@@ -195,15 +195,16 @@ public class ControllerAndSomethingElse {
     }
 
     private ResponseEntity<List<Employee>> newResponseEntity(String sqlQuery, Integer size, Integer page, String sort) {
+        String newSqlQuery = sqlQuery;
         if (sort != null && sort.equals("hired")) {
-            sqlQuery += " order by hiredate";
+            newSqlQuery += " order by hiredate";
         } else if (sort != null) {
-            sqlQuery += " order by " + sort;
+            newSqlQuery += " order by " + sort;
         }
         if (page == null) {
-            return ResponseEntity.ok(newList(new Paging(0, 50), sqlQuery));
+            return ResponseEntity.ok(newList(new Paging(0, 50), newSqlQuery));
         } else {
-            return ResponseEntity.ok(newList(new Paging(page, size), sqlQuery));
+            return ResponseEntity.ok(newList(new Paging(page, size), newSqlQuery));
         }
     }
 
