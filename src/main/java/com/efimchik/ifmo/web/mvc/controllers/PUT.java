@@ -16,7 +16,7 @@ import java.util.Map;
 @Controller
 public class PUT {
     @PutMapping("/calc/{value}")
-    public ResponseEntity Put_Value(@PathVariable String value, @RequestBody String value_, HttpSession session){
+    public ResponseEntity putValue(@PathVariable String value, @RequestBody String value_, HttpSession session){
         if(session.getAttribute("parameters")==null) session.setAttribute("parameters", new HashMap<String, String>());
         Map<String, String> valueMap = (HashMap<String, String>)session.getAttribute("parameters");
         int status;
@@ -36,7 +36,7 @@ public class PUT {
     }
 
     @DeleteMapping("/calc/{value}")
-    public ResponseEntity Delete(@PathVariable String value, HttpSession session){
+    public ResponseEntity delete(@PathVariable String value, HttpSession session){
         Map<String, String> valueMap = (HashMap<String, String>) session.getAttribute("parameters");
         valueMap.remove(value);
         return new ResponseEntity(HttpStatus.valueOf(204));

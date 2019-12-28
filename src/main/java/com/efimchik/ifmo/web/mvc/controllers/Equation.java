@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
 public class Equation {
     @PutMapping("/calc/equation")
-    public ResponseEntity Put_Equation(@RequestBody String equation, HttpSession session){
+    public ResponseEntity putEquation(@RequestBody String equation, HttpSession session){
         int status;
         if(badlyFormatted(equation)){
             status = 400;
@@ -38,7 +37,7 @@ public class Equation {
     }
 
     @DeleteMapping("/calc/equation")
-    public ResponseEntity Delete(HttpSession session){
+    public ResponseEntity delete(HttpSession session){
         session.setAttribute("equation", null);
         return new ResponseEntity(HttpStatus.valueOf(204));
     }

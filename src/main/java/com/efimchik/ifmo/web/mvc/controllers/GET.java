@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 @Controller
 public class GET {
     @GetMapping("/calc/result")
-    public ResponseEntity<String> Get_result(HttpSession session){
+    public ResponseEntity<String> getResult(HttpSession session){
         if(session.getAttribute("equation") == null) {
             return new ResponseEntity<>(HttpStatus.valueOf(409));
         }
@@ -34,6 +34,8 @@ public class GET {
                 else equation_.append(equation.charAt(i));
             }
             equation = equation_.toString();
+            equation = equation + "=";
+            if('-' == equation.charAt(0)) equation = "0" + equation;
             return new ResponseEntity<>(calc(equation), HttpStatus.valueOf(200));
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.valueOf(409));
@@ -49,8 +51,6 @@ public class GET {
     private String calc(String equation){
         Stack<Long> numStack = new Stack<Long>();
         Stack<Character> symStack = new Stack<Character>();
-        equation = equation + "=";
-        if('-' == equation.charAt(0)) equation = "0" + equation;
         StringBuffer temp = new StringBuffer();
         equation = equation.replaceAll(" ", "");
         for(int i = 0; i<equation.length(); i++){
@@ -110,10 +110,7 @@ public class GET {
         switch (sym){
             case '(': return true;
             case '*':
-            case '/': {
-                if (top == '+' || top == '-') return true;
-                else return false;
-            }
+            case '/': return (top == '+' || top == '-');
             case '+':
             case '-':
             case ')':
