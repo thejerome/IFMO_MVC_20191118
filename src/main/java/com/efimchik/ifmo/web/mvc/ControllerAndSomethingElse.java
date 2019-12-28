@@ -26,7 +26,7 @@ import java.util.Optional;
 public class ControllerAndSomethingElse {
 
     @GetMapping("/employees")
-    private ResponseEntity<List<Employee>> getEmployees(@RequestParam(required = false) Integer size,
+    public ResponseEntity<List<Employee>> getEmployees(@RequestParam(required = false) Integer size,
                                                         @RequestParam(required = false) Integer page,
                                                         @RequestParam(required = false) String sort) {
         String sqlQuery = "select * from employee";
@@ -34,7 +34,7 @@ public class ControllerAndSomethingElse {
     }
 
     @GetMapping("/employees/{id}")
-    private ResponseEntity<Employee> getEmployeeById(@PathVariable Long id, @RequestParam(required = false) String full_chain) {
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id, @RequestParam(required = false) String full_chain) {
         String sqlQuery = "select * from employee where id=" + id;
         Employee employee = null;
         if (full_chain != null && full_chain.equals("true")) {
@@ -53,26 +53,26 @@ public class ControllerAndSomethingElse {
     }
 
     @GetMapping("/employees/by_manager/{managerID}")
-    private ResponseEntity<List<Employee>> getEmployeesByManager(@RequestParam(required = false) Integer size,
+    public ResponseEntity<List<Employee>> getEmployeesByManager(@RequestParam(required = false) Integer size,
                                                                  @RequestParam(required = false) Integer page,
                                                                  @RequestParam(required = false) String sort,
                                                                  @PathVariable Integer managerID) {
-        String SqlQuery = "SELECT * FROM EMPLOYEE WHERE MANAGER=" + managerID;
-        return newResponseEntity(SqlQuery, size, page, sort);
+        String sqlQuery = "SELECT * FROM EMPLOYEE WHERE MANAGER=" + managerID;
+        return newResponseEntity(sqlQuery, size, page, sort);
     }
 
     @GetMapping("/employees/by_department/{department}")
-    private ResponseEntity<List<Employee>> getEmployeesByDepartment(@RequestParam(required = false) Integer size,
+    public ResponseEntity<List<Employee>> getEmployeesByDepartment(@RequestParam(required = false) Integer size,
                                                                     @RequestParam(required = false) Integer page,
                                                                     @RequestParam(required = false) String sort,
                                                                     @PathVariable String department) {
-        String SqlQuery;
+        String sqlQuery;
         if (isNumber(department)) {
-            SqlQuery = "select * from employee where department=" + department;
+            sqlQuery = "select * from employee where department=" + department;
         } else {
-            SqlQuery = "select * from employee inner join department on department.id=employee.department where department.name='" + department + "'";
+            sqlQuery = "select * from employee inner join department on department.id=employee.department where department.name='" + department + "'";
         }
-        return newResponseEntity(SqlQuery, size, page, sort);
+        return newResponseEntity(sqlQuery, size, page, sort);
     }
 
     private boolean isNumber(String s) {
@@ -194,16 +194,16 @@ public class ControllerAndSomethingElse {
         }
     }
 
-    private ResponseEntity<List<Employee>> newResponseEntity(String SqlQuery, Integer size, Integer page, String sort) {
+    private ResponseEntity<List<Employee>> newResponseEntity(String sqlQuery, Integer size, Integer page, String sort) {
         if (sort != null && sort.equals("hired")) {
-            SqlQuery += " order by hiredate";
+            sqlQuery += " order by hiredate";
         } else if (sort != null) {
-            SqlQuery += " order by " + sort;
+            sqlQuery += " order by " + sort;
         }
         if (page == null) {
-            return ResponseEntity.ok(newList(new Paging(0, 50), SqlQuery));
+            return ResponseEntity.ok(newList(new Paging(0, 50), sqlQuery));
         } else {
-            return ResponseEntity.ok(newList(new Paging(page, size), SqlQuery));
+            return ResponseEntity.ok(newList(new Paging(page, size), sqlQuery));
         }
     }
 
