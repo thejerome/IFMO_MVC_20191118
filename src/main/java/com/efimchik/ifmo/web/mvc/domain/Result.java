@@ -11,12 +11,10 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.Exception;
 
 
 @RestController
 public class Result {
-    String sort;
 
     private ResultSet getResultSet(String sql){
 
@@ -179,19 +177,19 @@ public class Result {
                                                                   @RequestParam(required = false) Integer size,
                                                                   @RequestParam(required = false) String sort,
                                                                   @PathVariable Integer managerId) throws SQLException {
-        this.sort = sort;
+        String sort1 = sort;
 
-        if (sort != null && sort.equals("hired"))
-            sort = "HIREDATE";
+        if (sort1 != null && sort1.equals("hired"))
+            sort1 = "HIREDATE";
 
         String request;
         String s = (page != null) ? " OFFSET " + size * page : " ";
-        if (sort != null) if (size != null) request = "SELECT * FROM employee WHERE manager = " + managerId +
-                (" ORDER BY " + sort) +
+        if (sort1 != null) if (size != null) request = "SELECT * FROM employee WHERE manager = " + managerId +
+                (" ORDER BY " + sort1) +
                 (" LIMIT " + size) +
                 s;
         else request = "SELECT * FROM employee WHERE manager = " + managerId +
-                    (" ORDER BY " + sort) +
+                    (" ORDER BY " + sort1) +
                     " " +
                     s;
         else if (size != null) request = "SELECT * FROM employee WHERE manager = " + managerId +
@@ -212,7 +210,7 @@ public class Result {
                                                             @RequestParam(required = false) Integer size,
                                                             @RequestParam(required = false) String sort,
                                                             @PathVariable String dep) throws SQLException {
-        this.sort = sort;
+        String sort1 = sort;
 
         Long departmentId;
 
@@ -223,25 +221,25 @@ public class Result {
             departmentId = res.getId();
         }
 
-        if (sort != null && sort.equals("hired"))
-            sort = "HIREDATE";
+        if (sort1 != null && sort1.equals("hired"))
+            sort1 = "HIREDATE";
 
         String request;
-        if (sort != null) if (size != null)
+        if (sort1 != null) if (size != null)
             if (page != null) request = "SELECT * FROM employee WHERE department = " + departmentId +
-                    (" ORDER BY " + sort) +
+                    (" ORDER BY " + sort1) +
                     (" LIMIT " + size) +
                     String.format(" OFFSET %d", size * page);
             else request = "SELECT * FROM employee WHERE department = " + departmentId +
-                    (" ORDER BY " + sort) +
+                    (" ORDER BY " + sort1) +
                     (" LIMIT " + size) +
                     " ";
         else if (page != null) request = "SELECT * FROM employee WHERE department = " + departmentId +
-                (" ORDER BY " + sort) +
+                (" ORDER BY " + sort1) +
                 " " +
                 String.format(" OFFSET %d", size * page);
         else request = "SELECT * FROM employee WHERE department = " + departmentId +
-                    (" ORDER BY " + sort) +
+                    (" ORDER BY " + sort1) +
                     " " +
                     " ";
         else if (size != null) request = "SELECT * FROM employee WHERE department = " + departmentId +
