@@ -130,18 +130,19 @@ public class Result {
     public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(required = false) Integer page,
                                                           @RequestParam(required = false) Integer size,
                                                           @RequestParam(required = false) String sort) throws SQLException {
+        String sort1 = sort;
 
-        if (sort != null && sort.equals("hired"))
-            sort = "HIREDATE";
+        if (sort1 != null && sort1.equals("hired"))
+            sort1 = "HIREDATE";
 
         String request;
         final String s = (page != null) ? " OFFSET " + size * page : " ";
-        if (sort != null) if (size != null) request = "SELECT * FROM EMPLOYEE" +
-                (" ORDER BY " + sort) +
+        if (sort1 != null) if (size != null) request = "SELECT * FROM EMPLOYEE" +
+                (" ORDER BY " + sort1) +
                 (" LIMIT " + size) +
                 s;
         else request = "SELECT * FROM EMPLOYEE" +
-                    (" ORDER BY " + sort) +
+                    (" ORDER BY " + sort1) +
                     " " +
                     s;
         else if (size != null) request = "SELECT * FROM EMPLOYEE" +
