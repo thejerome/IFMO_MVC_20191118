@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class ConnectionSource {
     // JDBC driver name and database URL
-    static final String JDBC_DRIVER = "org.h2.Driver";
+    private static final String JDBC_DRIVER = "org.h2.Driver";
     private static final String DB_URL = "jdbc:h2:mem:testdb";
 
     //  Database credentials

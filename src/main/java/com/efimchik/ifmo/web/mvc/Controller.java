@@ -1,7 +1,12 @@
 package com.efimchik.ifmo.web.mvc;
 
 import com.efimchik.ifmo.web.mvc.domain.Employee;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.sql.SQLException;
 import java.util.List;
@@ -47,7 +52,7 @@ public class Controller {
 
     public static String isHired(String sort){
         if (sort != null){
-            if (sort.equals("hired")){
+            if ("hired".equals(sort)){
                 sort = "hiredate";
                 return sort;
         }

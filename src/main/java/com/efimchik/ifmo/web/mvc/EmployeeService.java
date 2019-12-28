@@ -13,10 +13,6 @@ import java.util.*;
 
 public class EmployeeService {
 
-    public EmployeeService(){
-
-    }
-
     public static List<Employee> getAllEmployees(Integer page, Integer size, String sort) throws SQLException {
         String str = "select * from EMPLOYEE";
         return getAnswer(str, page, size,sort);
