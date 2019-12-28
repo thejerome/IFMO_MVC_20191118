@@ -77,7 +77,7 @@ public class Mapper {
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             String request = "SELECT * FROM DEPARTMENT";
             ResultSet rs = statement.executeQuery(request);
-            rs.next();
+            if (rs.isBeforeFirst()) rs.next();
             while ((!rs.isAfterLast()) && (rs.getInt("id") != id)){
                 rs.next();
             }
