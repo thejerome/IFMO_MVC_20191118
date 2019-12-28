@@ -11,11 +11,12 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.lang.Exception;
 
 
 @RestController
 public class Result {
+    String sort;
 
     private ResultSet getResultSet(String sql){
 
@@ -29,12 +30,9 @@ public class Result {
         }
     }
 
-    public Result() {
-        try {
+    public Result() throws Exception{
             Class.forName("org.h2.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
 
@@ -44,7 +42,7 @@ public class Result {
 
 
 
-    private Employee EmpMapRow(ResultSet resultSet, boolean a, boolean MainManager ){
+    private Employee empMapRow(ResultSet resultSet, boolean a, boolean MainManager ){
 
         try {
             Long id = Long.valueOf(resultSet.getString("ID"));
@@ -67,7 +65,7 @@ public class Result {
                 ResultSet managerResultSet = getResultSet("SELECT * FROM employee WHERE id = " + manId);
                 assert managerResultSet != null;
                 if (managerResultSet.next())
-                    manager = EmpMapRow(managerResultSet, !MainManager, MainManager);
+                    manager = empMapRow(managerResultSet, !MainManager, MainManager);
             }
 
 
@@ -101,7 +99,7 @@ public class Result {
         ResultSet resultSet = getResultSet(req);
         if (resultSet != null){
             while (resultSet.next()){
-                allEmployees.add(EmpMapRow(resultSet, false, false));
+                allEmployees.add(empMapRow(resultSet, false, false));
             }
             return allEmployees;
         }
@@ -168,7 +166,7 @@ public class Result {
 
         assert resultSet != null;
         if (resultSet.next()) {
-            return new ResponseEntity<> (EmpMapRow(resultSet, false, Boolean.parseBoolean(isFullChain)), HttpStatus.OK);
+            return new ResponseEntity<> (empMapRow(resultSet, false, Boolean.parseBoolean(isFullChain)), HttpStatus.OK);
         }
         else
             return null;
@@ -181,6 +179,7 @@ public class Result {
                                                                   @RequestParam(required = false) Integer size,
                                                                   @RequestParam(required = false) String sort,
                                                                   @PathVariable Integer managerId) throws SQLException {
+        this.sort = sort;
 
         if (sort != null && sort.equals("hired"))
             sort = "HIREDATE";
@@ -213,6 +212,7 @@ public class Result {
                                                             @RequestParam(required = false) Integer size,
                                                             @RequestParam(required = false) String sort,
                                                             @PathVariable String dep) throws SQLException {
+        this.sort = sort;
 
         Long departmentId;
 
