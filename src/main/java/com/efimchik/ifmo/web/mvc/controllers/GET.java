@@ -36,6 +36,7 @@ public class GET {
             equation = equation_.toString();
             equation = equation + "=";
             if('-' == equation.charAt(0)) equation = "0" + equation;
+            equation = equation.replaceAll(" ", "");
             return new ResponseEntity<>(calc(equation), HttpStatus.valueOf(200));
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.valueOf(409));
@@ -48,13 +49,12 @@ public class GET {
         return isNum.matches();
     }
 
-    private String calc(String equation){
+    private String calc(String str){
         Stack<Long> numStack = new Stack<Long>();
         Stack<Character> symStack = new Stack<Character>();
         StringBuffer temp = new StringBuffer();
-        equation = equation.replaceAll(" ", "");
-        for(int i = 0; i<equation.length(); i++){
-            char c = equation.charAt(i);
+        for(int i = 0; i<str.length(); i++){
+            char c = str.charAt(i);
             if(isNumber(c)){
                 temp.append(c);
             }
@@ -95,8 +95,8 @@ public class GET {
             }
         }
         int result = Math.toIntExact(numStack.pop());
-        String str = String.valueOf(result);
-        return str;
+        String st = String.valueOf(result);
+        return st;
     }
 
     private boolean isNumber(char ch){
