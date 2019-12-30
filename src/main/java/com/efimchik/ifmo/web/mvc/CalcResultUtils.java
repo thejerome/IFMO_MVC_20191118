@@ -92,11 +92,12 @@ public class CalcResultUtils {
                         s = operators.pop();
                     }
                 }
-                else if (operators.size() > 0 && getPriority(expr.charAt(i)) <= getPriority(operators.peek())) {
-                    out.append(operators.pop()).append(" ");
+                else {
+                    if (operators.size() > 0 && getPriority(expr.charAt(i)) <= getPriority(operators.peek())) {
+                        out.append(operators.pop()).append(" ");
+                    }
                     operators.push(expr.charAt(i));
                 }
-                else operators.push(expr.charAt(i));
             }
         }
 
