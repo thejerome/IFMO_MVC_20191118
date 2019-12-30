@@ -55,7 +55,7 @@ public class CalcResultUtils {
 
         StringBuilder expr = new StringBuilder();
 
-        for (int i = 0; i < output.length(); ++i) {
+        for (int i = 0; i < output.length(); i ++) {
             String symbol = Character.toString(output.charAt(i));
             String valueOfVar = getValue(session2, symbol);
             if (!isLetter(symbol)) {
@@ -71,24 +71,20 @@ public class CalcResultUtils {
             expr.append(' ');
         }
 
-        String new_input = expr.toString();
-
         StringBuilder out = new StringBuilder();
         Stack<Character> operators = new Stack<>();
 
-        for (int i = 0; i < new_input.length(); ++i)
+        for (int i = 0; i < expr.length(); i++)
         {
-            if (new_input.charAt(i) >= '0' && new_input.charAt(i) <= '9') {
-                i = getLength(new_input, out, i);
+            if (expr.charAt(i) >= '0' && expr.charAt(i) <= '9') {
+                i = getLength(expr.toString(), out, i);
                 out.append(" ");
                 i--;
             }
-
-            else if (isOperator(new_input.charAt(i)))
-            {
-                if (new_input.charAt(i) == '(')
-                    operators.push(new_input.charAt(i));
-                else if (new_input.charAt(i) == ')') {
+            else if (isOperator(expr.charAt(i))) {
+                if (expr.charAt(i) == '(')
+                    operators.push(expr.charAt(i));
+                else if (expr.charAt(i) == ')') {
                     char s = operators.pop();
 
                     while (s != '(') {
@@ -96,24 +92,18 @@ public class CalcResultUtils {
                         s = operators.pop();
                     }
                 }
-                else {
-                    if (operators.size() > 0 && getPriority(new_input.charAt(i)) <= getPriority(operators.peek())) {
-                        out.append(operators.pop().toString()).append(" ");
-                    }
-                    operators.push(new_input.charAt(i));
-
+                else if (operators.size() > 0 && getPriority(expr.charAt(i)) <= getPriority(operators.peek())) {
+                    out.append(operators.pop()).append(" ");
+                    operators.push(expr.charAt(i));
                 }
+                else operators.push(expr.charAt(i));
             }
         }
 
-        while (operators.size() > 0)
+        while (operators.size() > 0) {
             out.append(operators.pop()).append(" ");
+        }
 
-//        StringBuilder result = new StringBuilder();
-//        for (int i = 0 ; i < out.length(); i ++){
-//            if (out.charAt(i) != ')')
-//                result.append(out.charAt(i));
-//        }
         return out.toString();
     }
     private static int getLength(String new_input, StringBuilder out, int length) {
@@ -140,7 +130,6 @@ public class CalcResultUtils {
             if (input.charAt(i) >= '0' && input.charAt(i)<= '9')
             {
                 StringBuilder a = new StringBuilder();
-
                 i = getLength(input, a, i);
                 stack.push(Integer.parseInt(a.toString()));
                 i--;
