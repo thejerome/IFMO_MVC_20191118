@@ -3,7 +3,7 @@ package com.efimchik.ifmo.web.mvc;
 import javax.servlet.http.HttpSession;
 import java.util.Stack;
 
-public class CalcResult {
+public class CalcResultUtils {
     private static boolean isLetter(String s){
         for (int i = 0; i < s.length(); ++i){
             if (Character.isLetter(s.charAt(i))){
@@ -55,21 +55,18 @@ public class CalcResult {
 
         StringBuilder expr = new StringBuilder();
 
-        for (int i = 0; i < output.length(); i ++) {
+        for (int i = 0; i < output.length(); ++i) {
             String symbol = Character.toString(output.charAt(i));
-
+            String valueOfVar = getValue(session2, symbol);
             if (!isLetter(symbol)) {
                 expr.append(symbol);
             }
-            else{
-                String valueOfVar = getValue(session2, symbol);
-                if (valueOfVar == null) return null;
-                else if (Integer.parseInt(valueOfVar) < 0){
-                    expr.append(valueOfVar.substring(1)).append("0000");
-                }
-                else{
-                    expr.append(valueOfVar);
-                }
+            else if (valueOfVar == null) return null;
+            else if (valueOfVar.charAt(0) == '-'){
+                expr.append(valueOfVar.substring(1)).append("0000");
+            }
+            else {
+                expr.append(valueOfVar);
             }
             expr.append(' ');
         }
@@ -79,7 +76,7 @@ public class CalcResult {
         StringBuilder out = new StringBuilder();
         Stack<Character> operators = new Stack<>();
 
-        for (int i = 0; i < new_input.length(); i++)
+        for (int i = 0; i < new_input.length(); ++i)
         {
             if (new_input.charAt(i) >= '0' && new_input.charAt(i) <= '9') {
                 i = getLength(new_input, out, i);
@@ -112,12 +109,12 @@ public class CalcResult {
         while (operators.size() > 0)
             out.append(operators.pop()).append(" ");
 
-        StringBuilder result = new StringBuilder();
-        for (int i = 0 ; i < out.length(); i ++){
-            if (out.charAt(i) != ')')
-                result.append(out.charAt(i));
-        }
-        return result.toString();
+//        StringBuilder result = new StringBuilder();
+//        for (int i = 0 ; i < out.length(); i ++){
+//            if (out.charAt(i) != ')')
+//                result.append(out.charAt(i));
+//        }
+        return out.toString();
     }
     private static int getLength(String new_input, StringBuilder out, int length) {
         int i = length;
