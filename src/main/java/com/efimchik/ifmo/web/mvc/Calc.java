@@ -3,7 +3,7 @@ package com.efimchik.ifmo.web.mvc;
 import javax.servlet.http.HttpSession;
 import java.util.Stack;
 
-public class Calculator {
+class Calc {
     private static boolean isLetter(String s){
         for (int i = 0; i < s.length(); ++i){
             if (Character.isLetter(s.charAt(i))){
@@ -59,21 +59,19 @@ public class Calculator {
             String symbol = Character.toString(output.charAt(i));
 
             if (!isLetter(symbol)) {
-
                 expr.append(symbol);
                 expr.append(' ');
                 continue;
             }
-            if (isLetter(symbol)) {
+            else if (isLetter(symbol)) {
                 String valueOfVar = getValue(session2, symbol);
                 if (valueOfVar == null) return null;
-                if (Integer.parseInt(valueOfVar) < 0){
+                else if (Integer.parseInt(valueOfVar) < 0){
                     expr.append(valueOfVar.substring(1)).append("0000");
                 }
                 else{
                     expr.append(valueOfVar);
                 }
-
                 expr.append(' ');
                 continue;
             }
@@ -83,27 +81,23 @@ public class Calculator {
             }
         }
 
-
         String new_input = expr.toString();
-
 
         StringBuilder out = new StringBuilder();
         Stack<Character> operators = new Stack<>();
 
         for (int i = 0; i < new_input.length(); i++)
         {
-
             if (new_input.charAt(i) == ' ')
                 continue;
 
-            if (new_input.charAt(i) >= '0' && new_input.charAt(i) <= '9') {
+            else if (new_input.charAt(i) >= '0' && new_input.charAt(i) <= '9') {
                 i = getLength(new_input, out, i);
-
                 out.append(" ");
                 i--;
             }
 
-            if (isOperator(new_input.charAt(i)) | new_input.charAt(i) == '(' | new_input.charAt(i) == ')')
+            else if (isOperator(new_input.charAt(i)) | new_input.charAt(i) == '(' | new_input.charAt(i) == ')')
             {
                 if (new_input.charAt(i) == '(')
                     operators.push(new_input.charAt(i));
@@ -115,6 +109,7 @@ public class Calculator {
                     {
                         out.append(s).append(' ');
                         s = operators.pop();
+
                     }
                 }
                 else
@@ -132,6 +127,7 @@ public class Calculator {
             out.append(operators.pop()).append(" ");
 
         StringBuilder result = new StringBuilder();
+
         for (int i = 0 ; i < out.length(); i ++){
             if (out.charAt(i) != ')')
                 result.append(out.charAt(i));
@@ -139,16 +135,17 @@ public class Calculator {
         return result.toString();
     }
     private static int getLength(String new_input, StringBuilder out, int length) {
-        while (new_input.charAt(length) != ' ' && !isOperator(new_input.charAt(length))) //Смотрим до разделения, чтобы получить число
+        int i = length;
+        while (new_input.charAt(i) != ' ' && !isOperator(new_input.charAt(i))) //Смотрим до разделения, чтобы получить число
         {
-            out.append(new_input.charAt(length));
-            length++;
+            out.append(new_input.charAt(i));
+            i++;
 
-            if (length == new_input.length()) {
+            if (i == new_input.length()) {
                 break;
             }
         }
-        return length;
+        return i;
     }
 
     public static String counting(String input)
