@@ -36,10 +36,9 @@ public class EquationContr {
 
     private static boolean equationCheck(String expr){
         for (int i = 0; i < expr.length() - 1; i++)
-            if (expr.charAt(i) <= 'z')
-                if (expr.charAt(i) >= 'a' && expr.charAt(i + 1) >= 'a' && expr.charAt(i + 1) <= 'z') {
+            if (expr.charAt(i) <= 'z' && expr.charAt(i) >= 'a' && expr.charAt(i + 1) >= 'a' && expr.charAt(i + 1) <= 'z') {
                     return true;
-                }
+            }
         return false;
     }
 

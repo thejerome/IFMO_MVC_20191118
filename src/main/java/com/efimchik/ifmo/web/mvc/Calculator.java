@@ -3,7 +3,7 @@ package com.efimchik.ifmo.web.mvc;
 import javax.servlet.http.HttpSession;
 import java.util.Stack;
 
-class Calculator {
+public class Calculator {
     private static boolean isLetter(String s){
         for (int i = 0; i < s.length(); ++i){
             if (Character.isLetter(s.charAt(i))){
@@ -47,7 +47,7 @@ class Calculator {
 
     }
 
-    static String getExpression(String output, HttpSession session2)
+    public static String getExpression(String output, HttpSession session2)
     {
         if (output == null){
             return null;
@@ -138,18 +138,20 @@ class Calculator {
         }
         return result.toString();
     }
-    private static int getLength(String new_input, StringBuilder out, int i) {
-        while (new_input.charAt(i) != ' ' && !isOperator(new_input.charAt(i))) //Смотрим до разделения, чтобы получить число
+    private static int getLength(String new_input, StringBuilder out, int length) {
+        while (new_input.charAt(length) != ' ' && !isOperator(new_input.charAt(length))) //Смотрим до разделения, чтобы получить число
         {
-            out.append(new_input.charAt(i));
-            i++;
+            out.append(new_input.charAt(length));
+            length++;
 
-            if (i == new_input.length()) break;
+            if (length == new_input.length()) {
+                break;
+            }
         }
-        return i;
+        return length;
     }
 
-    static String counting(String input)
+    public static String counting(String input)
     {
         Stack<Integer> stack = new Stack<>();
 
