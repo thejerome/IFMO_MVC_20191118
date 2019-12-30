@@ -76,8 +76,10 @@ public class ResController {
             for (Map.Entry<String, String> var : eqMap.entrySet()) {
                 String key = var.getKey();
                 String val = sesMap.get(key);
-                if (val == null)
+                if (val == null) {
+
                     throw new IllegalArgumentException("No such value");
+                }
                 while (!Pattern.matches("^[-0-9]+$", val)) {
                     key = val;
                     val = sesMap.get(key);
@@ -89,7 +91,7 @@ public class ResController {
     }
     public static boolean ifCorrectCh(char s)
     {
-        if (((s >= 'a' && s <= 'z')))
+        if (s >= 'a' && s <= 'z')
         {
             return true;
         }

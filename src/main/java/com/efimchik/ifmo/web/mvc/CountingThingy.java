@@ -1,49 +1,15 @@
 package com.efimchik.ifmo.web.mvc;
 import java.util.ArrayDeque;
 import java.util.Stack;
+import java.util.LinkedList;
 import java.util.regex.Pattern;
-
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
 
 public class CountingThingy {
-    
-    private static int compute(ArrayDeque<String> polQ) {
-        Stack<Integer> finalThingy = new Stack<>();
 
-        while (!polQ.isEmpty()) {
-            String q = polQ.peek();
-
-            if (Pattern.matches("^[0-9]+$", q)) {
-                finalThingy.push(Integer.parseInt(q));
-            } else {
-                char op = polQ.peek().charAt(0);
-                int a = finalThingy.pop();
-                int b = finalThingy.pop();
-                int res = 0;
-                switch (op) {
-                    case  ('+'):
-                        res = a + b;
-                        break;
-                    case ('-'):
-                        res = a - b;
-                        break;
-                    case ('/'):
-                        res = a / b;
-                        break;
-                    case ('*'):
-                        res = a * b;
-                        break;
-                    default:
-                        ///codacy, fuck you
-                        break;
-                }
-                finalThingy.push(res);
-            }
-
-            polQ.poll();
-        }
-
-        return finalThingy.pop();
-    }
     public static boolean ifEqCorrect (String s)
     {
         if (s.indexOf('*') != -1 || s.indexOf('/') != -1 || s.indexOf('+') != -1 || s.indexOf('-') != -1)
@@ -66,46 +32,7 @@ public class CountingThingy {
             return  false;
         }
     }
-    private static ArrayDeque<String> toPolNotation(String eq) {
-        ArrayDeque<String> polQ = new ArrayDeque<>();
-        Stack<Character> eqStack = new Stack<>();
-        int i = 0;
-        while (i < eq.length()) {
-            char ch = eq.charAt(i);
 
-            if (Character.isDigit(ch)) {
-                String num = "";
-                while (Character.isDigit(eq.charAt(i))) {
-                    num = num + eq.charAt(i);
-                    i=i+1;
-                }
-                polQ.offer(num);
-                i=i-1;
-            }
-            switch (ch) {
-                case  ('('):
-                    eqStack.push(ch);
-                    break;
-                case (')'):
-                    while (eqStack.peek() != '(')
-                        polQ.offer(eqStack.pop().toString());
-                    eqStack.pop();
-                    break;
-                default:
-                    while (!((eqStack.peek() != '(')&&(eqStack.peek() == '-' || eqStack.peek() == '+')&&(ch == '/' || ch == '*'))) {
-                        String offering=eqStack.pop().toString();
-                        polQ.offer(offering);
-                    }
-                    eqStack.push(ch);
-                    break;
-            }
-            i=i+1;
-        }
-        while (!eqStack.empty()) {
-            polQ.offer(eqStack.pop().toString());
-        }
-        return polQ;
-    }
     public static boolean ifCorrect(String s)
     {
         if (((Integer.valueOf(s)*Integer.valueOf(s)<100000000)||(s.charAt(0) >= 'a' && s.charAt(0) <= 'z')))
@@ -117,16 +44,99 @@ public class CountingThingy {
             return  false;
         }
     }
-    public static int process(String toCalc) {
-        StringBuffer temp = new StringBuffer('(' + toCalc + ')');
-
-        int i = 1;
-        while (i < temp.length()) {
-            if (temp.charAt(i) == '-' && !Character.isDigit(temp.charAt(i - 1)))
-                temp.insert(i, '0');
-            i++;
+    static boolean isDelim(char c) {
+        return c == ' ';
+    }
+    static boolean isOperator(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '%';
+    }
+    static int priority(char op) {
+        switch (op) {
+            case '+':
+            case '-':
+                return 1;
+            case '*':
+            case '/':
+            case '%':
+                return 2;
+            default:
+                return -1;
         }
-        toCalc=temp.toString();
-        return compute(toPolNotation(toCalc));
+    }
+    static void processOperator(LinkedList<Integer> st, char op) {
+        int r = st.removeLast();
+        if (st.isEmpty()) //шоб не зафелилось на отрицательных
+        {
+            st.add(r*(-1));
+            return;
+        }
+
+        int l = st.removeLast();
+
+        switch (op) {
+            case '+':
+                st.add(l + r);
+                break;
+            case '-':
+                st.add(l - r);
+                break;
+            case '*':
+                st.add(l * r);
+                break;
+            case '/':
+                st.add(l / r);
+                break;
+            case '%':
+                st.add(l % r);
+                break;
+        }
+    }
+    public static int eval(String s) {
+        LinkedList<Integer> st = new LinkedList<Integer>();
+        LinkedList<Character> op = new LinkedList<Character>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (isDelim(c))
+                continue;
+            if (c == '(')
+                op.add('(');
+            else if (c == ')') {
+                while (op.getLast() != '(')
+                    processOperator(st,op.removeLast());
+                op.removeLast();
+            } else if (isOperator(c)) {
+                while (!op.isEmpty() && priority(op.getLast()) >= priority(c))
+                    processOperator(st, op.removeLast());
+                op.add(c);
+            } else {
+                String operand = "";
+                while (i < s.length() && Character.isDigit(s.charAt(i)))
+                    operand += s.charAt(i++);
+                --i;
+                st.add(Integer.parseInt(operand));
+            }
+        }
+        while (!op.isEmpty()) {
+
+            processOperator(st, op.removeLast());
+        }
+        return st.get(0);
+    }
+    public static int process(String toCalc) {
+
+        /*ScriptEngineManager mgr = new ScriptEngineManager();
+        ScriptEngine engine = mgr.getEngineByName("JavaScript");
+        System.out.println("Equation: "+ toCalc);
+        Object res= null;
+        try {
+            res = engine.eval(toCalc);
+        } catch (ScriptException e) {
+            e.printStackTrace();
+        }
+
+        Double d = Double.parseDouble(res.toString());
+            return d.intValue();*/
+        return eval(toCalc);
+
     }
 }
