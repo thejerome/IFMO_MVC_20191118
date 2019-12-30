@@ -97,7 +97,7 @@ class Calculator {
                 continue;
 
             if (new_input.charAt(i) >= '0' && new_input.charAt(i) <= '9') {
-                i = getI(new_input, out, i);
+                i = getLength(new_input, out, i);
 
                 out.append(" ");
                 i--;
@@ -138,7 +138,7 @@ class Calculator {
         }
         return result.toString();
     }
-    private static int getI(String new_input, StringBuilder out, int i) {
+    private static int getLength(String new_input, StringBuilder out, int i) {
         while (new_input.charAt(i) != ' ' && !isOperator(new_input.charAt(i))) //Смотрим до разделения, чтобы получить число
         {
             out.append(new_input.charAt(i));
@@ -160,7 +160,7 @@ class Calculator {
             {
                 StringBuilder a = new StringBuilder();
 
-                i = getI(input, a, i);
+                i = getLength(input, a, i);
                 stack.push(Integer.parseInt(a.toString()));
                 i--;
             }

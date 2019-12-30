@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpSession;
-
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.valueOf;
 
 @Controller
 public class EquationContr {
@@ -30,15 +29,15 @@ public class EquationContr {
     }
 
     @DeleteMapping("/calc/equation")
-    public ResponseEntity deleteEquation(HttpSession session) {
+    public ResponseEntity<String> deleteEquation(HttpSession session) {
         session.removeAttribute("equation");
-        return new ResponseEntity(valueOf(204));
+        return new ResponseEntity<>(valueOf(204));
     }
 
     private static boolean equationCheck(String expr){
         for (int i = 0; i < expr.length() - 1; i++)
             if (expr.charAt(i) <= 'z')
-                if (!('a' > expr.charAt(i) || 'a' > expr.charAt(i + 1) || expr.charAt(i + 1) > 'z')) {
+                if (expr.charAt(i) >= 'a' && expr.charAt(i + 1) >= 'a' && expr.charAt(i + 1) <= 'z') {
                     return true;
                 }
         return false;
