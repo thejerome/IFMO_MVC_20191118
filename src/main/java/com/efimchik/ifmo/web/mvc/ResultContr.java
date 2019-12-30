@@ -18,9 +18,9 @@ public class ResultContr{
         else {
             String result;
             equation = equation.replaceAll("\\s", " ");
-            String result1 = calc.getExpression(equation, session);
+            String result1 = CalcResult.getExpression(equation, session);
             try {
-                result = calc.counting(result1);
+                result = CalcResult.counting(result1);
             } catch (Exception e) {
                 return new ResponseEntity<>(valueOf(409));
             }

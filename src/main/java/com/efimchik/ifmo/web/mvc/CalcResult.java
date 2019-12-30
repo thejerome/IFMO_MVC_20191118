@@ -3,7 +3,7 @@ package com.efimchik.ifmo.web.mvc;
 import javax.servlet.http.HttpSession;
 import java.util.Stack;
 
-class calc {
+class CalcResult {
     private static boolean isLetter(String s){
         for (int i = 0; i < s.length(); ++i){
             if (Character.isLetter(s.charAt(i))){
@@ -14,7 +14,7 @@ class calc {
     }
 
     private static boolean isOperator(char c) {
-        return (c == '+' || c == '-' || c == '/' || c == '*');
+        return (c == '+' || c == '-' || c == '/' || c == '*' || c =='('|| c ==')');
     }
 
     private static int getPriority(char sym) {
@@ -92,23 +92,19 @@ class calc {
                 i--;
             }
 
-            else if (isOperator(new_input.charAt(i)) | new_input.charAt(i) == '(' | new_input.charAt(i) == ')')
+            else if (isOperator(new_input.charAt(i)))
             {
                 if (new_input.charAt(i) == '(')
                     operators.push(new_input.charAt(i));
-                else if (new_input.charAt(i) == ')')
-                {
+                else if (new_input.charAt(i) == ')') {
                     char s = operators.pop();
 
-                    while (s != '(')
-                    {
+                    while (s != '(') {
                         out.append(s).append(' ');
                         s = operators.pop();
-
                     }
                 }
-                else
-                {
+                else {
                     if (operators.size() > 0 && getPriority(new_input.charAt(i)) <= getPriority(operators.peek())) {
                         out.append(operators.pop().toString()).append(" ");
                     }
@@ -122,7 +118,6 @@ class calc {
             out.append(operators.pop()).append(" ");
 
         StringBuilder result = new StringBuilder();
-
         for (int i = 0 ; i < out.length(); i ++){
             if (out.charAt(i) != ')')
                 result.append(out.charAt(i));
