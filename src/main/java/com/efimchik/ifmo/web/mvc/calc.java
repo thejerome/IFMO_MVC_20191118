@@ -3,7 +3,7 @@ package com.efimchik.ifmo.web.mvc;
 import javax.servlet.http.HttpSession;
 import java.util.Stack;
 
-class Calc {
+class calc {
     private static boolean isLetter(String s){
         for (int i = 0; i < s.length(); ++i){
             if (Character.isLetter(s.charAt(i))){
@@ -61,7 +61,6 @@ class Calc {
             if (!isLetter(symbol)) {
                 expr.append(symbol);
                 expr.append(' ');
-                continue;
             }
             else if (isLetter(symbol)) {
                 String valueOfVar = getValue(session2, symbol);
@@ -73,9 +72,8 @@ class Calc {
                     expr.append(valueOfVar);
                 }
                 expr.append(' ');
-                continue;
             }
-            if (isOperator(symbol.charAt(0))) {
+            else if (isOperator(symbol.charAt(0))) {
                 expr.append(symbol.charAt(0));
                 expr.append(' ');
             }
@@ -88,10 +86,7 @@ class Calc {
 
         for (int i = 0; i < new_input.length(); i++)
         {
-            if (new_input.charAt(i) == ' ')
-                continue;
-
-            else if (new_input.charAt(i) >= '0' && new_input.charAt(i) <= '9') {
+            if (new_input.charAt(i) >= '0' && new_input.charAt(i) <= '9') {
                 i = getLength(new_input, out, i);
                 out.append(" ");
                 i--;
