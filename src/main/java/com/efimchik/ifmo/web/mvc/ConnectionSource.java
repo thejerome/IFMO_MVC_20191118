@@ -4,8 +4,8 @@ import java.sql.*;
 
 final class DBConnection {
 
-    private String URL;
-    private String USER;
+    public String URL;
+    public String USER;
 
     public static DBConnection instance;
 
