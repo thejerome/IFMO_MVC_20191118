@@ -75,29 +75,24 @@ public class CalcResultUtils {
         Stack<Character> operators = new Stack<>();
 
         for (int i = 0; i < expr.length(); i++)
-        {
             if (expr.charAt(i) >= '0' && expr.charAt(i) <= '9') {
                 i = getLength(expr.toString(), out, i);
                 out.append(" ");
                 i--;
-            }
-            else if (expr.charAt(i) == '(')
-                    operators.push(expr.charAt(i));
-            else if (expr.charAt(i) == ')') {
+            } else if (expr.charAt(i) == ')') {
                 char s = operators.pop();
                 while (s != '(') {
                     out.append(s).append(' ');
                     s = operators.pop();
                 }
-            }
+            } else if (expr.charAt(i) == '(')
+                operators.push(expr.charAt(i));
             else if (isOperator(expr.charAt(i))) {
                 if (operators.size() > 0 && getPriority(expr.charAt(i)) <= getPriority(operators.peek())) {
                     out.append(operators.pop()).append(" ");
                 }
                 operators.push(expr.charAt(i));
             }
-        }
-
         while (operators.size() > 0) {
             out.append(operators.pop()).append(" ");
         }
