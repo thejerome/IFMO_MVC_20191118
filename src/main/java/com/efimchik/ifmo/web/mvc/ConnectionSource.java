@@ -9,7 +9,7 @@ final class DBConnection {
 
     public static DBConnection instance;
 
-    static DBConnection getInstance() {
+    public static DBConnection getInstance() {
         if (instance == null) {
             instance = new DBConnection("jdbc:h2:mem:testdb", "sa");
         }
@@ -21,7 +21,7 @@ final class DBConnection {
         this.USER = USER;
     }
 
-    Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, "");
     }
 }
