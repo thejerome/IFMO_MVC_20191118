@@ -7,7 +7,7 @@ final class DBConnection {
     private String URL;
     private String USER;
 
-    private static DBConnection instance;
+    public static DBConnection instance;
 
     static DBConnection getInstance() {
         if (instance == null) {
@@ -16,7 +16,7 @@ final class DBConnection {
         return instance;
     }
 
-    private DBConnection(String URL, String USER) {
+    public DBConnection(String URL, String USER) {
         this.URL = URL;
         this.USER = USER;
     }

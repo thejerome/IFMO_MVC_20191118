@@ -15,7 +15,7 @@ import java.util.List;
 public class MyRestController {
 
     @GetMapping(value = "/employees", produces = "application/json")
-    ResponseEntity<List<Employee>> getAllEmployee(@RequestParam(required = false) Integer page,
+    public ResponseEntity<List<Employee>> getAllEmployee(@RequestParam(required = false) Integer page,
                                                           @RequestParam(required = false) Integer size,
                                                           @RequestParam(required = false) String sort) {
 
