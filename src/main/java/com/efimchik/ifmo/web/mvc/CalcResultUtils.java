@@ -81,23 +81,20 @@ public class CalcResultUtils {
                 out.append(" ");
                 i--;
             }
+            else if (expr.charAt(i) == '(')
+                    operators.push(expr.charAt(i));
+            else if (expr.charAt(i) == ')') {
+                char s = operators.pop();
+                while (s != '(') {
+                    out.append(s).append(' ');
+                    s = operators.pop();
+                }
+            }
             else if (isOperator(expr.charAt(i))) {
-                if (expr.charAt(i) == '(')
-                    operators.push(expr.charAt(i));
-                else if (expr.charAt(i) == ')') {
-                    char s = operators.pop();
-
-                    while (s != '(') {
-                        out.append(s).append(' ');
-                        s = operators.pop();
-                    }
+                if (operators.size() > 0 && getPriority(expr.charAt(i)) <= getPriority(operators.peek())) {
+                    out.append(operators.pop()).append(" ");
                 }
-                else {
-                    if (operators.size() > 0 && getPriority(expr.charAt(i)) <= getPriority(operators.peek())) {
-                        out.append(operators.pop()).append(" ");
-                    }
-                    operators.push(expr.charAt(i));
-                }
+                operators.push(expr.charAt(i));
             }
         }
 
