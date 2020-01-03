@@ -18,16 +18,17 @@ import static com.efimchik.ifmo.web.mvc.Service.getEmployeeResultListByRequest;
 @RestController
 public class Controller {
 
-    private String makePagingSQLRequest(String request, Integer page, Integer size, String sort) {
-            if (sort != null)
-                request += " ORDER BY " + sort + " ASC";
-            if (size != null)
-                request += " LIMIT " + size;
-            if (page != null)
-                request += " OFFSET " + size * page;
-            //just fixing the name of the field
-            request = request.replace("hired", "hiredate");
-            return request;
+    private String makePagingSQLRequest(String oldrequest, Integer page, Integer size, String sort) {
+        String request = oldrequest;
+        if (sort != null)
+            request += " ORDER BY " + sort + " ASC";
+        if (size != null)
+            request += " LIMIT " + size;
+        if (page != null)
+            request += " OFFSET " + size * page;
+        //just fixing the name of the field
+        request = request.replace("hired", "hiredate");
+        return request;
     }
 
     @GetMapping("/employees")
@@ -53,10 +54,10 @@ public class Controller {
     public ResponseEntity<Employee> getEmployeeById(@PathVariable(name = "employeeId") String employeeId,
                                                           @RequestParam(name = "full_chain", required = false, defaultValue = "false") String isFullChain
     ) throws SQLException {
-        int managmentDepth = (isFullChain.equals("true") ? -5 : 0);
+        int managmentDepth = ("true".equals(isFullChain) ? -5 : 0);
         try {
             return new ResponseEntity<>(
-                    Service.getEmployeeResultListByRequest(
+                    getEmployeeResultListByRequest(
                             ("SELECT * FROM EMPLOYEE WHERE ID=" + Integer.parseInt(employeeId)), managmentDepth
                     ).get(0), HttpStatus.OK
             );
