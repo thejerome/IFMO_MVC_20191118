@@ -22,7 +22,7 @@ public class Controller {
             request += " ORDER BY " + sort + " ASC";
         if (size != null)
             request += " LIMIT " + size;
-        if (page != null)
+        if (page != null && size != null)
             request += " OFFSET " + size * page;
         //just fixing the name of the field
         request = request.replace("hired", "hiredate");
@@ -31,9 +31,9 @@ public class Controller {
 
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getAllEmployees(
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
-            @RequestParam(required = false) String sort
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "sort", required = false) String sort
     ) {
         try {
             return new ResponseEntity<>(
@@ -51,7 +51,7 @@ public class Controller {
     @GetMapping("/employees/{employeeId}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable(name = "employeeId") String employeeId,
                                                           @RequestParam(name = "full_chain", required = false, defaultValue = "false") String isFullChain
-    ) throws SQLException {
+    ) {
         int managmentDepth = ("true".equals(isFullChain) ? -5 : 0);
         try {
             return new ResponseEntity<>(
@@ -69,7 +69,7 @@ public class Controller {
                                                                   @RequestParam(required = false) Integer size,
                                                                   @RequestParam(required = false) String sort,
                                                                   @PathVariable Integer managerId
-    ) throws SQLException {
+    ) {
         try {
             return new ResponseEntity<>(
                     getEmployeeResultListByRequest(
