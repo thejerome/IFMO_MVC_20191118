@@ -16,7 +16,7 @@ public class ServiceUtils {
 
     
 
-    public static List<Employee> getEmployeeResultListByRequest(
+    static List<Employee> getEmployeeResultListByRequest(
             String request,
             int managementDepth
     ) throws SQLException {
@@ -86,7 +86,7 @@ public class ServiceUtils {
         }
     }
 
-    public static Long getDepartmentIdByName(String departmentName) throws SQLException {
+    static Long getDepartmentIdByName(String departmentName) throws SQLException {
         Department depId = null;
 
         String request = "SELECT * FROM department WHERE name = '" + departmentName + "'";
