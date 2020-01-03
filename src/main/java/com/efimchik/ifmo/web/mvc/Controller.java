@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.efimchik.ifmo.web.mvc.Service.getDepartmentIdByName;
-import static com.efimchik.ifmo.web.mvc.Service.getEmployeeResultListByRequest;
+import static com.efimchik.ifmo.web.mvc.ServiceUtils.getDepartmentIdByName;
+import static com.efimchik.ifmo.web.mvc.ServiceUtils.getEmployeeResultListByRequest;
 
 @RestController
 public class Controller {

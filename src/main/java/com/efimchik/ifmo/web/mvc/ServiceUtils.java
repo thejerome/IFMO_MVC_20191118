@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Service {
+public class ServiceUtils {
 
     
 
@@ -50,7 +50,7 @@ public class Service {
             int managerId = rs.getInt("manager");
             if(managerId != 0 && managementDepth < 1) {
                 ResultSet managerResultSet = ConnectionSource.instance().createConnection().createStatement()
-                        .executeQuery("SELECT * FROM EMPLOYEE WHERE id = " + Integer.toString(managerId));
+                        .executeQuery("SELECT * FROM EMPLOYEE WHERE id = " + managerId);
                 //Recursion
                 if (managerResultSet.next())
                     manager = getEmployeeFromResultSet(managerResultSet, managementDepth + 1);
