@@ -10,17 +10,12 @@ public class ConnectionDb {
     private static String USER = "sa";
     private static String PASS = "";
 
-    public static final ConnectionDb instance = new ConnectionDb(DB_URL, USER, PASS);
+    public static final ConnectionDb instance = new ConnectionDb();
 
     public static ConnectionDb instance() {
         return instance;
     }
 
-    private ConnectionDb(String DB_URL, String USER, String PASS) {
-        this.DB_URL = DB_URL;
-        this.USER = USER;
-        this.PASS = PASS;
-    }
 
     public Connection getConnection() {
         try {

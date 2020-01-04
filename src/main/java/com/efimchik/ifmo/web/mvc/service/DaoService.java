@@ -52,7 +52,7 @@ public class DaoService {
             final PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM DEPARTMENT WHERE NAME = ?");
             preparedStatement.setString(1, name);
             final ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
+            if (rs.isBeforeFirst()) rs.next();
             return rs.getInt("ID");
         } catch (SQLException e) {
             return  0;
