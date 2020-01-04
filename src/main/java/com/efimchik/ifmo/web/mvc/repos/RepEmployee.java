@@ -1,6 +1,12 @@
 package com.efimchik.ifmo.web.mvc.repos;
 
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Date;
 
 @Entity
@@ -20,9 +26,6 @@ public class RepEmployee {
     private Double salary;
     private Integer department;
 
-    public RepEmployee() {
-    }
-
     public Integer getId() {
         return id;
     }
@@ -35,9 +38,7 @@ public class RepEmployee {
         return lastName;
     }
 
-    public String getMiddlename() {
-        return middlename;
-    }
+    public String getMiddlename() { return middlename; }
 
     public String getPosition() {
         return position;

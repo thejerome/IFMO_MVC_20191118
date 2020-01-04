@@ -1,7 +1,13 @@
 package com.efimchik.ifmo.web.mvc.controllers;
 
-import com.efimchik.ifmo.web.mvc.domain.*;
-import com.efimchik.ifmo.web.mvc.repos.*;
+import com.efimchik.ifmo.web.mvc.domain.Department;
+import com.efimchik.ifmo.web.mvc.domain.Employee;
+import com.efimchik.ifmo.web.mvc.domain.FullName;
+import com.efimchik.ifmo.web.mvc.domain.Position;
+import com.efimchik.ifmo.web.mvc.repos.DepartmentRep;
+import com.efimchik.ifmo.web.mvc.repos.EmployeeRep;
+import com.efimchik.ifmo.web.mvc.repos.RepDepartment;
+import com.efimchik.ifmo.web.mvc.repos.RepEmployee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
