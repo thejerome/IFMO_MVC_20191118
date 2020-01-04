@@ -25,6 +25,7 @@ public class Main {
         } else
             session.setAttribute("equation", eq);
         return new ResponseEntity<>(httpStatus);
+        
     }
 
     private boolean good(String eq) {
