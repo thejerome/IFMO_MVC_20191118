@@ -21,11 +21,12 @@ public class MainController {
     public ResponseEntity<List<Employee>> getAllEmployees (@RequestParam(required = false) Integer page,
                                                            @RequestParam(required = false) Integer size,
                                                            @RequestParam(required = false) String sort) {
-        if ("hired".equals(sort)) {
-            sort = "hiredate";
+        String sorting = sort;
+        if ("hired".equals(sorting)) {
+            sorting = "hiredate";
         }
         List<Employee> tmp = allWeHave.getEmployees(1, "SELECT * FROM EMPLOYEE" +
-                ((sort != null) ? " order by " + sort : " ") +
+                ((sorting != null) ? " order by " + sorting : " ") +
                 ((size != null) ? " limit " + size : " ") +
                 ((page != null) ? " offset " + size * page : " "));
         return ResponseEntity.ok(tmp);
@@ -48,12 +49,13 @@ public class MainController {
                                                                  @RequestParam(required = false) Integer page,
                                                                  @RequestParam(required = false) Integer size,
                                                                  @RequestParam(required = false) String sort ) {
-        if ("hired".equals(sort)) {
-            sort = "hiredate";
+        String sorting = sort;
+        if ("hired".equals(sorting)) {
+            sorting = "hiredate";
         }
         List<Employee> tmp = allWeHave.getEmployees(1, "SELECT * FROM EMPLOYEE " +
                 "WHERE MANAGER = " + id +
-                ((sort != null) ? " order by " + sort : " ") +
+                ((sorting != null) ? " order by " + sorting : " ") +
                 ((size != null) ? " limit " + size : " ") +
                 ((page != null) ? " offset " + size * page : " "));
         return ResponseEntity.ok(tmp);
@@ -65,8 +67,9 @@ public class MainController {
                                                                    @RequestParam(required = false) Integer size,
                                                                    @RequestParam(required = false) String sort ) {
 
-        if ("hired".equals(sort)) {
-            sort = "hiredate";
+        String sorting = sort;
+        if ("hired".equals(sorting)) {
+            sorting = "hiredate";
         }
         int id = 0;
         if (idOrName.charAt(0) <= '9' && idOrName.charAt(0) >= '0') {
@@ -76,7 +79,7 @@ public class MainController {
         }
         List<Employee> tmp = allWeHave.getEmployees(1, "SELECT * FROM EMPLOYEE " +
                 "WHERE DEPARTMENT = " + id +
-                ((sort != null) ? " order by " + sort : " ") +
+                ((sorting != null) ? " order by " + sorting : " ") +
                 ((size != null) ? " limit " + size : " ") +
                 ((page != null) ? " offset " + size * page : " "));
         return ResponseEntity.ok(tmp);
