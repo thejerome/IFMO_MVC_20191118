@@ -84,7 +84,7 @@ public class DaoService {
                 department = getDepartment(rs.getInt("department"));
             }
 
-            return new Employee(Long.valueOf(thisId),
+            return new Employee((long) thisId,
                     fullName,
                     pos,
                     date,
@@ -103,7 +103,7 @@ public class DaoService {
 
     private Department departmentMapRow(ResultSet rs) {
         try {
-            Long id = Long.valueOf(rs.getInt("id"));
+            Long id = (long) rs.getInt("id");
             String name = rs.getString("name");
             String location = rs.getString("location");
             return new Department(id, name,location);
