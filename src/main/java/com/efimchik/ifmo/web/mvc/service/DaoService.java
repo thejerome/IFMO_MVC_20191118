@@ -37,7 +37,7 @@ public class DaoService {
             final Connection conn = connectionDb.getConnection();
             final Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             final ResultSet rs = statement.executeQuery("SELECT * FROM DEPARTMENT WHERE ID = " + id);
-            rs.next();
+            if (rs.isBeforeFirst()) rs.next();
             return departmentMapRow(rs);
         } catch (SQLException e) {
             return  null;
@@ -75,11 +75,9 @@ public class DaoService {
             LocalDate date = LocalDate.parse(String.valueOf(rs.getDate("hiredate")));
             BigDecimal salary = rs.getBigDecimal("salary");
             Employee manager = null;
-            if (chain != 2) {
-                if (rs.getString("manager") != null) {
+            if (chain != 2 && rs.getString("manager") != null) {
                     int managerId = Integer.valueOf(rs.getString("manager"));
                     manager = getManager(managerId, chain);
-                }
             }
             Department department = null;
             if (rs.getString("department") != null) {
