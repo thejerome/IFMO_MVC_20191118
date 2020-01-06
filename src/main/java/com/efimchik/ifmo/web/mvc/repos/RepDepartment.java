@@ -1,5 +1,7 @@
 package com.efimchik.ifmo.web.mvc.repos;
 
+import org.springframework.data.annotation.PersistenceConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +16,10 @@ public class RepDepartment {
     private Integer id;
     private String name;
     private String location;
+
+    @PersistenceConstructor
+    public RepDepartment() {
+    }
 
     public Integer getId() {
         return id;

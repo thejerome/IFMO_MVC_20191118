@@ -1,6 +1,8 @@
 package com.efimchik.ifmo.web.mvc.repos;
 
 
+import org.springframework.data.annotation.PersistenceConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,6 +27,11 @@ public class RepEmployee {
     private Date hired;
     private Double salary;
     private Integer department;
+
+    @PersistenceConstructor
+    public RepEmployee() {
+
+    }
 
     public Integer getId() {
         return id;
