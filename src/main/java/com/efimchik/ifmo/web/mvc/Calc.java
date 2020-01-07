@@ -52,7 +52,7 @@ public class Calc {
         }
 
         int status = 200;
-        return new ResponseEntity<>(result.toString(), HttpStatus.valueOf(status));
+        return new ResponseEntity<>(result, HttpStatus.valueOf(status));
     }
 
     private static String calc(List<String> postfix) {
