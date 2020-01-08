@@ -106,17 +106,15 @@ public class DataBaseController {
         Department department = getDepartmentById(departmentId);
         Employee manager = null;
 
-        if (managerId != null) {
-            if (firstManagerClone) {
-                String SQLString = "SELECT * FROM EMPLOYEE";
-                if (!chain) {
-                    firstManagerClone = false;
-                }
-                ResultSet newResultSet = getResultSet(SQLString);
-                while (newResultSet.next()) {
-                    if (BigInteger.valueOf(newResultSet.getInt("ID")).equals(managerId)) {
-                        manager = getEmployee(newResultSet, chain, firstManagerClone);
-                    }
+        if (managerId != null && firstManagerClone) {
+            String SQLString = "SELECT * FROM EMPLOYEE";
+            if (!chain) {
+                firstManagerClone = false;
+            }
+            ResultSet newResultSet = getResultSet(SQLString);
+            while (newResultSet.next()) {
+                if (BigInteger.valueOf(newResultSet.getInt("ID")).equals(managerId)) {
+                    manager = getEmployee(newResultSet, chain, firstManagerClone);
                 }
             }
         }
@@ -159,10 +157,8 @@ public class DataBaseController {
     private String getIfClauseResponseEntity(String sort) {
         String fixedSort = sort;
 
-        if (sort != null) {
-            if (sort.equals("hired")) {
-                fixedSort = "HIREDATE";
-            }
+        if (sort != null && sort.equals("hired")) {
+            fixedSort = "HIREDATE";
         }
         return fixedSort;
     }
