@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class DepartmentService {
+public class DepartmentUtils {
     @Autowired
-    private static UserService userService;
+    private static UserUtils userUtils;
 
-    static Department departmentMapRow(ResultSet resultSet) {
+    protected static Department departmentMapRow(ResultSet resultSet) {
         try {
             Long id = Long.valueOf(resultSet.getString("ID"));
             String name = resultSet.getString("NAME");
@@ -47,7 +47,7 @@ public class DepartmentService {
 
     public static List<Employee> getEmployeeByDepResultList(Long departmentId, String sort, Integer size, Integer page) {
         try {
-            String sortLocal = userService.isHired(sort);
+            String sortLocal = userUtils.isHired(sort);
             ResultSet resultSet = ConnectionSource.instance().createConnection().createStatement().executeQuery(
                     "SELECT * FROM employee WHERE department = " + departmentId +
                             ((sortLocal != null) ? " ORDER BY " + sortLocal : " ") +
@@ -57,7 +57,7 @@ public class DepartmentService {
             List<Employee> result = new ArrayList<>();
 
             while (resultSet.next()) {
-                result.add(userService.employeeMapRow(resultSet, false, false));
+                result.add(userUtils.employeeMapRow(resultSet, false, false));
             }
 
             return result;

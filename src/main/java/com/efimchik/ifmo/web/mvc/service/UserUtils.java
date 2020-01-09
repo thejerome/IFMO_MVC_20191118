@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserUtils {
     @Autowired
-    private static DepartmentService departmentService;
+    private static DepartmentUtils departmentUtils;
 
-     static Employee employeeMapRow(ResultSet resultSet, boolean isManager, boolean isFullChain) {
+     protected static Employee employeeMapRow(ResultSet resultSet, boolean isManager, boolean isFullChain) {
         try {
             Long id = Long.valueOf(resultSet.getString("ID"));
             FullName fullName = new FullName(
@@ -46,7 +46,7 @@ public class UserService {
                     .executeQuery("SELECT * FROM department WHERE id = " + resultSet.getInt("DEPARTMENT"));
 
             if (departmentResultSet.next())
-                department = departmentService.departmentMapRow(departmentResultSet);
+                department = departmentUtils.departmentMapRow(departmentResultSet);
 
             return new Employee(id, fullName, position, hireDate, salary, manager, department);
         }
@@ -119,7 +119,7 @@ public class UserService {
         return null;
     }
 
-    static String isHired(String sort){
+    protected static String isHired(String sort){
         String sortLocal;
         if (sort != null && sort.equals("hired")){
             sortLocal = "HIREDATE";
