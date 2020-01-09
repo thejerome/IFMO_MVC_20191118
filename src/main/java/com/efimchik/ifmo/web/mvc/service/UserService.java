@@ -1,4 +1,4 @@
-package com.efimchik.ifmo.web.mvc.Service;
+package com.efimchik.ifmo.web.mvc.service;
 
 import com.efimchik.ifmo.web.mvc.ConnectionSource;
 import com.efimchik.ifmo.web.mvc.domain.Department;
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class UserService {
     @Autowired
-    private static DepService depService;
+    private static DepartmentService departmentService;
 
      static Employee employeeMapRow(ResultSet resultSet, boolean isManager, boolean isFullChain) {
         try {
@@ -46,7 +46,7 @@ public class UserService {
                     .executeQuery("SELECT * FROM department WHERE id = " + resultSet.getInt("DEPARTMENT"));
 
             if (departmentResultSet.next())
-                department = depService.departmentMapRow(departmentResultSet);
+                department = departmentService.departmentMapRow(departmentResultSet);
 
             return new Employee(id, fullName, position, hireDate, salary, manager, department);
         }
@@ -58,10 +58,10 @@ public class UserService {
 
     public static List<Employee> getEmployeeResultList(String sort, Integer size, Integer page) {
         try {
-            sort = isHired(sort);
+            String sortLocal = isHired(sort);
             ResultSet resultSet = ConnectionSource.instance().createConnection().createStatement().executeQuery(
                     "SELECT * FROM employee" +
-                            ((sort != null) ? " ORDER BY " + sort : " ") +
+                            ((sortLocal != null) ? " ORDER BY " + sortLocal : " ") +
                             ((size != null) ? " LIMIT " + size : " ") +
                             ((page != null && size != null) ? " OFFSET " + size * page : " ")
             );
@@ -81,10 +81,10 @@ public class UserService {
 
     public static List<Employee> getEmployeeByManagerResultList(Integer managerId, String sort, Integer size, Integer page) {
         try {
-            sort = isHired(sort);
+            String sortLocal = isHired(sort);
             ResultSet resultSet = ConnectionSource.instance().createConnection().createStatement().executeQuery(
                     "SELECT * FROM employee WHERE manager = " + managerId +
-                            ((sort != null) ? " ORDER BY " + sort : " ") +
+                            ((sortLocal != null) ? " ORDER BY " + sortLocal : " ") +
                             ((size != null) ? " LIMIT " + size : " ") +
                             ((page != null && size != null) ? " OFFSET " + size * page : " ")
             );
@@ -120,10 +120,13 @@ public class UserService {
     }
 
     static String isHired(String sort){
+        String sortLocal;
         if (sort != null && sort.equals("hired")){
-            sort = "HIREDATE";
+            sortLocal = "HIREDATE";
+            return sortLocal;
+        }else {
+            return sort;
         }
-        return sort;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.efimchik.ifmo.web.mvc.Service;
+package com.efimchik.ifmo.web.mvc.service;
 
 import com.efimchik.ifmo.web.mvc.ConnectionSource;
 import com.efimchik.ifmo.web.mvc.domain.Department;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class DepService {
+public class DepartmentService {
     @Autowired
     private static UserService userService;
 
@@ -47,10 +47,10 @@ public class DepService {
 
     public static List<Employee> getEmployeeByDepResultList(Long departmentId, String sort, Integer size, Integer page) {
         try {
-            sort = userService.isHired(sort);
+            String sortLocal = userService.isHired(sort);
             ResultSet resultSet = ConnectionSource.instance().createConnection().createStatement().executeQuery(
                     "SELECT * FROM employee WHERE department = " + departmentId +
-                            ((sort != null) ? " ORDER BY " + sort : " ") +
+                            ((sortLocal != null) ? " ORDER BY " + sortLocal : " ") +
                             ((size != null) ? " LIMIT " + size : " ") +
                             ((page != null && size != null) ? " OFFSET " + size * page : " ")
             );

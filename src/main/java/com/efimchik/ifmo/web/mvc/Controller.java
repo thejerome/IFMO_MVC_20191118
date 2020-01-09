@@ -1,7 +1,7 @@
 package com.efimchik.ifmo.web.mvc;
 
-import com.efimchik.ifmo.web.mvc.Service.DepService;
-import com.efimchik.ifmo.web.mvc.Service.UserService;
+import com.efimchik.ifmo.web.mvc.service.DepartmentService;
+import com.efimchik.ifmo.web.mvc.service.UserService;
 import com.efimchik.ifmo.web.mvc.domain.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.List;
 public class Controller {
 
     @Autowired
-    private DepService depService;
+    private DepartmentService departmentService;
 
     @Autowired
     private UserService userService;
@@ -57,8 +57,8 @@ public class Controller {
         Long departmentId;
         try { departmentId = Long.parseLong(departmentIdOrName); }
         catch (NumberFormatException e) {
-            departmentId = depService.getDepartmentIdByName(departmentIdOrName);
+            departmentId = departmentService.getDepartmentIdByName(departmentIdOrName);
         }
-        return new ResponseEntity<>(depService.getEmployeeByDepResultList(departmentId, sort, size, page), HttpStatus.OK);
+        return new ResponseEntity<>(departmentService.getEmployeeByDepResultList(departmentId, sort, size, page), HttpStatus.OK);
     }
 }
