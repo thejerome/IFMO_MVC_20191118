@@ -108,7 +108,7 @@ class ServiceFactory {
                 " = DEPARTMENT.ID" + sort;
     }
 
-    static List<Employee> getAll(Paging paging, String sort){
+    public static List<Employee> getAll(Paging paging, String sort){
         try{
             switch (sort){
                 case "lastName":
@@ -127,13 +127,10 @@ class ServiceFactory {
         }
     }
 
-    static Employee getById(Long id, boolean chain) throws SQLException {
+    public static Employee getById(Long id, boolean chain) throws SQLException {
         List<Employee> empAll = getEmployee(getRS(getSQL(" ORDER BY EMPLOYEE.ID")), chain);
         for(int i=0; i<14; i++){
-            if(empAll!=null){
-                if(empAll.get(i).getId()!=0 && empAll.get(i).getId().equals(id))
-                    return empAll.get(i);
-            }
+            if(empAll!=null && empAll.get(i).getId()!=0 && empAll.get(i).getId().equals(id)) return empAll.get(i);
         }
         return null;
     }
@@ -174,7 +171,7 @@ class ServiceFactory {
         return true;
     }
 
-    static List<Employee> getByDep(String department, Paging paging, String sort){
+    public static List<Employee> getByDep(String department, Paging paging, String sort){
         try{
             switch (sort){
                 case "lastName":
@@ -198,10 +195,8 @@ class ServiceFactory {
         List<Employee> empByManager = new ArrayList<Employee>();
         int i = 0;
         while (i<14){
-            if(empAllBySort!=null) {
-                if (empAllBySort.get(i).getManager() != null && empAllBySort.get(i).getManager().getId().equals(managerId)) {
+            if (empAllBySort!=null &&empAllBySort.get(i).getManager() != null && empAllBySort.get(i).getManager().getId().equals(managerId)) {
                     empByManager.add(empAllBySort.get(i));
-                }
             }
             i++;
         }
@@ -216,7 +211,7 @@ class ServiceFactory {
         return empPage;
     }
 
-    static List<Employee> getByManager(Long managerId, Paging paging, String sort){
+    public static List<Employee> getByManager(Long managerId, Paging paging, String sort){
         try{
             switch (sort){
                 case "lastName":

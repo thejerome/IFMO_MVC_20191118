@@ -1,11 +1,11 @@
 package com.efimchik.ifmo.web.mvc;
 
 public class Paging {
-    final int page;
-    final int itemPerPage;
+    public final int page;
+    public final int itemPerPage;
 
 
-    Paging(final int page, final int itemPerPage) {
+    public Paging(final int page, final int itemPerPage) {
         this.page = page;
         this.itemPerPage = itemPerPage;
     }

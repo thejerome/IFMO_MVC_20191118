@@ -10,11 +10,11 @@ class ConnectionSource {
 
     private static final ConnectionSource instance = new ConnectionSource();
 
-    static ConnectionSource instance(){
+    public static ConnectionSource instance(){
         return instance;
     }
 
-    Connection createConnection() throws SQLException{
+    public Connection createConnection() throws SQLException{
         return DriverManager.getConnection(DB_URL, USER, PASS);
     }
 
