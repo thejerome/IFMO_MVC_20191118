@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-class serviceFactory {
+class serviceFactoryUtil {
     private static ResultSet getRS(String sql) throws SQLException {
         return ConnectionSource.instance().createConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(sql);
     }
