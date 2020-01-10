@@ -17,12 +17,12 @@ public class Rest{
     public List<Employee> getAllEmployees(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
                                                          @RequestParam(name = "size", required = false, defaultValue = "10000") Integer size,
                                                          @RequestParam(name = "sort", required = false, defaultValue = "") String sort){
-        return ServiceFactory.getAll(new Paging(page, size), sort);
+        return Service.getAll(new Paging(page, size), sort);
     }
 
     @GetMapping("/employees/{employee_id}")
     public Employee getById(@RequestParam(required = false) boolean full_chain, @PathVariable Long employee_id) throws SQLException {
-        return ServiceFactory.getById(employee_id, full_chain);
+        return Service.getById(employee_id, full_chain);
     }
 
     @GetMapping("/employees/by_manager/{managerId}")
@@ -30,7 +30,7 @@ public class Rest{
                                         @RequestParam(required = false) Integer size,
                                         @RequestParam(required = false, defaultValue = "") String sort,
                                         @PathVariable Long managerId){
-        return ServiceFactory.getByManager(managerId, new Paging(page, size), sort);
+        return Service.getByManager(managerId, new Paging(page, size), sort);
     }
 
     @GetMapping("/employees/by_department/{depIdOrName}")
@@ -38,6 +38,6 @@ public class Rest{
                                     @RequestParam(required = false) Integer size,
                                     @RequestParam(required = false, defaultValue = "") String sort,
                                     @PathVariable String depIdOrName){
-        return ServiceFactory.getByDep(depIdOrName, new Paging(page, size), sort);
+        return Service.getByDep(depIdOrName, new Paging(page, size), sort);
     }
 }
