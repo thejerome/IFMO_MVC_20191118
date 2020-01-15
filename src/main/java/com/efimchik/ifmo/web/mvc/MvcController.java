@@ -23,8 +23,8 @@ public class MvcController {
 
     @PutMapping(value = "/{path}")
     public ResponseEntity<String> putDispatcher(HttpSession httpSession, @PathVariable String path,
-                                                @RequestBody String body) {
-        body = body.replace(" ", "");
+                                                @RequestBody String requestBody) {
+        String body = requestBody.replace(" ", "");
         HttpStatus status = httpSession.getAttribute(path) == null ? HttpStatus.CREATED : HttpStatus.OK;
         if ("equation".equals(path)) {
             if (!isValidEquation(body)) {
