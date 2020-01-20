@@ -1,14 +1,11 @@
 package com.efimchik.ifmo.web.mvc.controllers;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.spi.http.HttpContext;
 import java.util.ArrayDeque;
 import java.util.Objects;
 import java.util.Stack;
@@ -81,8 +78,6 @@ public class CalcController {
         for (int i = 0; i < s.length(); i++) {
             if (!Character.isDigit(s.charAt(i)) && !(i == 0 && s.charAt(i) == '-'))
                 return false;
-            else if (i == 0 && s.charAt(i) == '-') {
-            }
         }
         return true;
     }
