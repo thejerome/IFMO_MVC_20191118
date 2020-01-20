@@ -5,7 +5,6 @@ import com.efimchik.ifmo.web.mvc.domain.Employee;
 import com.efimchik.ifmo.web.mvc.domain.FullName;
 import com.efimchik.ifmo.web.mvc.domain.Position;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.*;
 import java.time.LocalDate;
@@ -121,7 +120,7 @@ public class ServiceFactoryController {
         }
     }
 
-    static BigInteger departmentByFrom(String from) throws SQLException {
+     static BigInteger departmentByFrom(String from) throws SQLException {
         ResultSet resultSet = resSetWithoutStatement(from);
         try {
             assert resultSet != null;
