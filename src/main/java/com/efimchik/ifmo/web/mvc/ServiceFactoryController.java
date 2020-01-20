@@ -4,17 +4,21 @@ import com.efimchik.ifmo.web.mvc.domain.Department;
 import com.efimchik.ifmo.web.mvc.domain.Employee;
 import com.efimchik.ifmo.web.mvc.domain.FullName;
 import com.efimchik.ifmo.web.mvc.domain.Position;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class ServiceFactoryController {
 
-    private static ResultSet resSet(String s) {
+    private ResultSet resSet(String s) {
         try {
             return DriverManager.getConnection("jdbc:h2:mem:testdb", "sa", "")
                     .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(s);
@@ -23,16 +27,7 @@ public class ServiceFactoryController {
         }
     }
 
-    private static ResultSet resSetWithoutStatement(String s) {
-        try {
-            return DriverManager.getConnection("jdbc:h2:mem:testdb", "sa", "")
-                    .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery(s);
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    static List<Employee> allEmployees(String from, boolean bool, boolean isManager) {
+    public List<Employee> allEmployees(String from, boolean bool, boolean isManager) {
         ResultSet resultSet = resSet(from);
         try {
             if (resultSet != null) {
@@ -50,7 +45,7 @@ public class ServiceFactoryController {
         }
     }
 
-    private static Employee employeeMapRow(ResultSet resultSet, boolean bool, boolean isManager) throws SQLException {
+    private Employee employeeMapRow(ResultSet resultSet, boolean bool, boolean isManager) throws SQLException {
         Long id = Long. parseLong(resultSet.getString("id"));
         FullName fullName = new FullName(
                 resultSet.getString("firstName"),
@@ -72,7 +67,7 @@ public class ServiceFactoryController {
                 department);
     }
 
-    private static Employee managerFound(ResultSet resultSet, boolean bool, boolean isManager) throws SQLException {
+    private Employee managerFound(ResultSet resultSet, boolean bool, boolean isManager) throws SQLException {
         Employee manager = null;
         if (resultSet.getObject("manager") != null && (bool || isManager)) {
             BigInteger managerId = new BigInteger(resultSet.getString("manager"));
@@ -109,7 +104,7 @@ public class ServiceFactoryController {
 //        return manager;
 //    }
 
-    private static Department departmentMapRow(ResultSet resultSet) {
+    private Department departmentMapRow(ResultSet resultSet) {
         try {
             Long ID = Long.parseLong(resultSet.getString("id"));
             return new Department(ID,
@@ -120,8 +115,8 @@ public class ServiceFactoryController {
         }
     }
 
-     static BigInteger departmentByFrom(String from) throws SQLException {
-        ResultSet resultSet = resSetWithoutStatement(from);
+     public BigInteger departmentByFrom(String from) throws SQLException {
+        ResultSet resultSet = resSet(from);
         try {
             assert resultSet != null;
             if (resultSet.next()) {
@@ -135,7 +130,7 @@ public class ServiceFactoryController {
         }
     }
 
-    private static List<Department> departmentsList(String from) {
+    private List<Department> departmentsList(String from) {
         ResultSet resultSet = resSet(from);
         List<Department> departments = new ArrayList<>();
         try {
@@ -149,7 +144,7 @@ public class ServiceFactoryController {
         return departments;
     }
 
-    private static Department departmentFound(List<Department> departments, Long departmentID) {
+    private Department departmentFound(List<Department> departments, Long departmentID) {
         Department departmentF = null;
         for (Department department : departments) {
             if (department.getId().equals(departmentID)) {

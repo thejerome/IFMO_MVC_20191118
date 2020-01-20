@@ -1,6 +1,7 @@
 package com.efimchik.ifmo.web.mvc;
 
 import com.efimchik.ifmo.web.mvc.domain.Employee;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +16,19 @@ import java.util.Objects;
 @RestController
 public class EmployeeController {
 
+    private final ServiceFactoryController serviceFactoryController;
+
+    @Autowired
+    public EmployeeController(ServiceFactoryController serviceFactoryController) {
+        this.serviceFactoryController = serviceFactoryController;
+    }
+
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getAll(@RequestParam(required = false) Integer page,
                                                  @RequestParam(required = false) Integer size,
                                                  @RequestParam(required = false) String sort) throws SQLException {
         String from = buildFrom("SELECT * FROM EMPLOYEE", sort, page, size, null);
-        List<Employee> entities = ServiceFactoryController.allEmployees(from,false, true);
+        List<Employee> entities = serviceFactoryController.allEmployees(from,false, true);
         assert entities != null;
         return ResponseEntity.ok(entities);
     }
@@ -30,9 +38,9 @@ public class EmployeeController {
                                             @RequestParam(name = "full_chain", required = false, defaultValue = "false") String fullChain) throws SQLException {
         String from = "SELECT * FROM EMPLOYEE WHERE id = " + employeeId;
         if ("true".equals(fullChain)) {
-            return ResponseEntity.ok(Objects.requireNonNull(ServiceFactoryController.allEmployees(from, true, true)).get(0));
+            return ResponseEntity.ok(Objects.requireNonNull(serviceFactoryController.allEmployees(from, true, true)).get(0));
         } else {
-            return ResponseEntity.ok(Objects.requireNonNull(ServiceFactoryController.allEmployees(from, false, true)).get(0));
+            return ResponseEntity.ok(Objects.requireNonNull(serviceFactoryController.allEmployees(from, false, true)).get(0));
         }
     }
 
@@ -42,7 +50,7 @@ public class EmployeeController {
                                                          @RequestParam(required = false) Integer size,
                                                          @RequestParam(required = false) String sort) throws SQLException {
         String from = buildFrom("SELECT * FROM EMPLOYEE WHERE manager = ", sort, page, size, managerId);
-        List<Employee> entities = ServiceFactoryController.allEmployees(from, false, true);
+        List<Employee> entities = serviceFactoryController.allEmployees(from, false, true);
         assert entities != null;
         return ResponseEntity.ok(entities);
     }
@@ -55,7 +63,7 @@ public class EmployeeController {
         BigInteger depId;
         if(!isNumber(depIdOrDepName)) {
             String query = "SELECT id FROM DEPARTMENT WHERE name = '" + depIdOrDepName + "'";
-            depId = ServiceFactoryController.departmentByFrom(query);
+            depId = serviceFactoryController.departmentByFrom(query);
         } else {
             depId = BigInteger.valueOf(Integer.parseInt(depIdOrDepName));
         }
@@ -66,7 +74,7 @@ public class EmployeeController {
                 ((size != null) ? " LIMIT " + size : " ") +
                 ((page != null) ? " OFFSET " + size * page : " ");
 //        String sql = buildFrom("SELECT * FROM EMPLOYEE WHERE department = ", sort, page, size, depId);
-        List<Employee> entities = ServiceFactoryController.allEmployees(from, false, true);
+        List<Employee> entities = serviceFactoryController.allEmployees(from, false, true);
         assert entities != null;
         return ResponseEntity.ok(entities);
 
