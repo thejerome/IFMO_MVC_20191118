@@ -2,7 +2,13 @@ package com.efimchik.ifmo.web.mvc;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.regex.Matcher;
@@ -128,11 +134,9 @@ public class CalcController {
             } else {
                 return ResponseEntity.ok().build();
             }
+        } catch (OutOfRangeException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (Exception e) {
-            if (e instanceof OutOfRangeException) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
-
             return ResponseEntity.badRequest().build();
         }
     }
