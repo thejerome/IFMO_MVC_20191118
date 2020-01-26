@@ -14,7 +14,7 @@ import java.sql.SQLException;
 @Component
 public class RowMapperFactory {
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     public EmployeeRowMapper employeeRowMapper() {
         return new EmployeeRowMapper() {

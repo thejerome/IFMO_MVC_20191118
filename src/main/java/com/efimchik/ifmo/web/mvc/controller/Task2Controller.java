@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class Task2Controller{
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     @GetMapping(value = {"", "/"})
     public List<Employee> getAll(@RequestParam(required = false) Integer page,
@@ -63,7 +64,8 @@ public class Task2Controller{
         return formData(byDepartment, page, size, sort);
     }
 
-    private List<Employee> formData(List<Employee> employees, Integer page, Integer size, String sort) {
+    private List<Employee> formData(List<Employee> employeeList, Integer page, Integer size, String sort) {
+        List<Employee> employees = new ArrayList<>(employeeList);
         if (sort != null) {
             switch (sort) {
                 case "lastName" :
@@ -78,6 +80,7 @@ public class Task2Controller{
                 case "salary":
                     employees.sort(Comparator.comparing(Employee::getSalary));
                     break;
+                default: break;
             }
         }
         if (page != null && size != null) {
