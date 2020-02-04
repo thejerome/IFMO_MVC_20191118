@@ -12,7 +12,7 @@ import java.util.Stack;
 
 @Controller
 public class ResultController {
-
+    private Map<String, String> variables;
     @GetMapping("/calc/result")
     public ResponseEntity<String> getResult(HttpSession session) {
         try {
@@ -35,7 +35,7 @@ public class ResultController {
         }
     }
 
-    private Map<String, String> variables;
+    //
 
     public Integer calculate(String str) {
         String strWithoutSpaces = str.replace(" ", "");
