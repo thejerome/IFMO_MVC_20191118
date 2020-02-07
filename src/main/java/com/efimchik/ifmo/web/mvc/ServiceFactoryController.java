@@ -23,7 +23,7 @@ public class ServiceFactoryController {
     public void setDataSource(final DataSource dataSource) throws SQLException {
         connection = dataSource.getConnection();
     }
-
+//pfff
     private ResultSet resSet(String query) {
         try {
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
