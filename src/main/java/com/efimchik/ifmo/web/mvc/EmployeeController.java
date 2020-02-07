@@ -27,7 +27,7 @@ public class EmployeeController {
                                                  @RequestParam(required = false) Integer size,
                                                  @RequestParam(required = false) String sort) {
         String from = buildFrom("SELECT * FROM EMPLOYEE", sort, page, size, null);
-        List<Employee> entities = serviceFactoryController.allEmployee(from);
+        List<Employee> entities = serviceFactoryController.allEmployee(from,false, true);
         assert entities != null;
         return ResponseEntity.ok(entities);
     }
@@ -37,9 +37,9 @@ public class EmployeeController {
                                             @RequestParam(name = "full_chain", required = false, defaultValue = "false") String fullChain) {
         String from = "SELECT * FROM EMPLOYEE WHERE id = " + employeeId;
         if ("true".equals(fullChain)) {
-            return ResponseEntity.ok(Objects.requireNonNull(serviceFactoryController.allEmployee(from)).get(0));
+            return ResponseEntity.ok(Objects.requireNonNull(serviceFactoryController.allEmployee(from, true, true)).get(0));
         } else {
-            return ResponseEntity.ok(Objects.requireNonNull(serviceFactoryController.allEmployee(from)).get(0));
+            return ResponseEntity.ok(Objects.requireNonNull(serviceFactoryController.allEmployee(from, false, true)).get(0));
         }
     }
 
@@ -49,7 +49,7 @@ public class EmployeeController {
                                                          @RequestParam(required = false) Integer size,
                                                          @RequestParam(required = false) String sort) {
         String from = buildFrom("SELECT * FROM EMPLOYEE WHERE manager = ", sort, page, size, managerId);
-        List<Employee> entities = serviceFactoryController.allEmployee(from);
+        List<Employee> entities = serviceFactoryController.allEmployee(from, false, true);
         assert entities != null;
         return ResponseEntity.ok(entities);
     }
@@ -75,7 +75,7 @@ public class EmployeeController {
         String from = "SELECT * FROM EMPLOYEE WHERE department = " +
                 depId + str(sort, fixedSort, size) +
                 ((page != null) ? " OFFSET " + size * page : " ");
-        List<Employee> entities = serviceFactoryController.allEmployee(from);
+        List<Employee> entities = serviceFactoryController.allEmployee(from, false, true);
         assert entities != null;
         return ResponseEntity.ok(entities);
 
