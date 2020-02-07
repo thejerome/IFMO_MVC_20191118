@@ -33,7 +33,7 @@ public class ServiceFactoryController {
         }
     }
 
-    List<Employee> allEmployee(String from, boolean bool, boolean isManager) {
+    protected List<Employee> allEmployee(String from, boolean bool, boolean isManager) {
         ResultSet resultSet = resSet(from);
         try {
             if (resultSet != null) {
@@ -108,7 +108,7 @@ public class ServiceFactoryController {
         return departmentF;
     }
 
-    BigInteger departmentByFrom(String from) {
+    protected BigInteger departmentByFrom(String from) {
         ResultSet resultSet = resSet(from);
         try {
             assert resultSet != null;
