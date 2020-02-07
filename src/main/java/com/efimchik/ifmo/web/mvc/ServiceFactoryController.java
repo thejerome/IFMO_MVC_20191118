@@ -33,13 +33,13 @@ public class ServiceFactoryController {
         }
     }
 
-    List<Employee> allEmployee(String from, boolean bool, boolean isManager) {
+    List<Employee> allEmployee(String from) {
         ResultSet resultSet = resSet(from);
         try {
             if (resultSet != null) {
                 List<Employee> employees = new ArrayList<>();
                 while (resultSet.next()) {
-                    employees.add(employeeMapRow(resultSet,  bool, isManager));
+                    employees.add(employeeMapRow(resultSet));
                 }
                 return employees;
             } else {
@@ -51,7 +51,7 @@ public class ServiceFactoryController {
         }
     }
 
-    private Employee employeeMapRow(ResultSet resultSet, boolean bool, boolean isManager) throws SQLException {
+    private Employee employeeMapRow(ResultSet resultSet) throws SQLException {
         Long id = Long. parseLong(resultSet.getString("id"));
         FullName fullName = new FullName(
                 resultSet.getString("firstName"),
@@ -70,19 +70,15 @@ public class ServiceFactoryController {
                 Position.valueOf(resultSet.getString("position")),
                 LocalDate.parse(resultSet.getString("hireDate")),
                 resultSet.getBigDecimal("salary"),
-                managerFound(resultSet, bool, isManager),
+                managerFound(resultSet),
                 department);
     }
 
-    private Employee managerFound(ResultSet resultSet, boolean bool, boolean isManager) throws SQLException {
+    private Employee managerFound(ResultSet resultSet) throws SQLException {
         Employee manager = null;
-        if (resultSet.getObject("manager") != null && (bool || isManager)) {
+        if (resultSet.getObject("manager") != null) {
             BigInteger managerId = new BigInteger(resultSet.getString("manager"));
-            if (bool) {
-                manager = Objects.requireNonNull(allEmployee("SELECT * FROM employee WHERE id=" + managerId, true, false)).get(0);
-            } else {
-                manager = Objects.requireNonNull(allEmployee("SELECT * FROM employee WHERE id=" + managerId, false, false)).get(0);
-            }
+            manager = Objects.requireNonNull(allEmployee("SELECT * FROM employee WHERE id=" + managerId)).get(0);
         }
         return manager;
     }
