@@ -131,8 +131,8 @@ public class ServiceFactoryController {
                 departments.add(departmentMapRow(resultSet));
             }
         } catch (SQLException ignored) {
-        return null;
-    }
+            return null;
+        }
         return departments;
     }
 }
