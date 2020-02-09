@@ -5,7 +5,6 @@ import com.efimchik.ifmo.web.mvc.domain.Department;
 import com.efimchik.ifmo.web.mvc.domain.Employee;
 import com.efimchik.ifmo.web.mvc.domain.FullName;
 import com.efimchik.ifmo.web.mvc.domain.Position;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
@@ -15,7 +14,6 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
@@ -48,8 +46,11 @@ public class EmployeeDao {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from employee where id = " + id);
-            resultSet.next();
-            return extractFromResultSet(resultSet, isFirst, cascade);
+            if (resultSet.next()) {
+                return extractFromResultSet(resultSet, isFirst, cascade);
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Error performing SQL query");
         }
@@ -114,12 +115,12 @@ public class EmployeeDao {
         );
 
         Employee manager =
-                Optional.ofNullable(isFirst || cascade ? resultSet.getBigDecimal("manager") : null)
+                ofNullable(isFirst || cascade ? resultSet.getBigDecimal("manager") : null)
                         .map(id -> findById(id.toString(), false, cascade))
                         .orElse(null);
 
         Department department =
-                Optional.ofNullable(resultSet.getBigDecimal("department"))
+                ofNullable(resultSet.getBigDecimal("department"))
                         .map(BigDecimal::toBigInteger)
                         .map(departmentDao::getById)
                         .orElse(null);

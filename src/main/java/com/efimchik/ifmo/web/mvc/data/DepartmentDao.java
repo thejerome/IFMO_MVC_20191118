@@ -25,8 +25,10 @@ public class DepartmentDao {
                     connection.prepareStatement("select * from department where id = ?");
             statement.setLong(1, id.longValue());
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return extractFromResultSet(resultSet);
+            if (resultSet.next()) {
+                return extractFromResultSet(resultSet);
+            } else
+                return null;
         } catch (SQLException e) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Error performing SQL query");
         }
