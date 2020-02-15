@@ -4,6 +4,8 @@ import java.util.*;
 
 public class EquationUtils {
 
+    private static String delimiters = "() +=*/";
+
     private static int priority (String variable) {
         if ("(".equals(variable)) {
             return 1;
@@ -14,9 +16,6 @@ public class EquationUtils {
         return 3;
     }
 
-
-
-    private static String delimiters = "() +=*/";
     private static boolean isDelimiters (String variable) {
         for(int i = 0; i < delimiters.length(); i++){
             if (variable.charAt(0) == delimiters.charAt(i)) {
