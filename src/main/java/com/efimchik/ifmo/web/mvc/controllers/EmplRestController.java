@@ -24,8 +24,7 @@ public class EmplRestController {
                 ((page != null) ? " OFFSET " + size*page : " ");
         List<Employee> employees = EmployeeUtil.getSortedEmployees(false, true, query);
         assert employees != null;
-        final ResponseEntity<List<Employee>> listResponseEntity = new ResponseEntity<List<Employee>>(employees);
-        return listResponseEntity;
+        return ResponseEntity.ok(employees);
     }
 
     @GetMapping(value = "/employees/{employee_id}")
@@ -51,8 +50,8 @@ public class EmplRestController {
                 ((size != null) ? " LIMIT " + size : " ") +
                 ((page != null) ? " OFFSET " + size*page : " ");
         List<Employee> employees = EmployeeUtil.getSortedEmployees(false, true, sql);
-        final ResponseEntity<List<Employee>> listResponseEntity = new ResponseEntity<List<Employee>>(employees);
-        return listResponseEntity;
+        assert employees != null;
+        return ResponseEntity.ok(employees);
     }
 
     @GetMapping(value = "/employees/by_department/{depIdOrDepName}")
@@ -74,8 +73,7 @@ public class EmplRestController {
                 ((page != null) ? " OFFSET " + size*page : " ");
         List<Employee> employees = EmployeeUtil.getSortedEmployees(false, true, query);
         assert employees != null;
-        final ResponseEntity<List<Employee>> listResponseEntity = new ResponseEntity<List<Employee>>(employees);
-        return listResponseEntity;
+        return ResponseEntity.ok(employees);
 
     }
 }
