@@ -60,13 +60,11 @@ public class EmployeeUtil {
         BigDecimal salary = rs.getBigDecimal("salary");
         Employee man = null;
         Department dep = null;
-        if (rs.getObject("manager") != null) {
-            if (chain || isManagerNeeded) {
-                BigInteger managerId = new BigInteger(rs.getString("manager"));
-                String query = "SELECT * FROM employee WHERE id=" + managerId;
+        if (rs.getObject("manager") != null && (chain || isManagerNeeded)) {
+            BigInteger managerId = new BigInteger(rs.getString("manager"));
+            String query = "SELECT * FROM employee WHERE id=" + managerId;
 
-                man = Objects.requireNonNull(getSortedEmployees(chain, false, query)).get(0);
-            }
+            man = Objects.requireNonNull(getSortedEmployees(chain, false, query)).get(0);
         }
         if (rs.getObject("department") != null) {
             Long departmentId = (long) rs.getInt("department");
