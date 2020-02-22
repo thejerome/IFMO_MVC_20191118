@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Helper {
+public class CalcHelper {
     public static boolean isValid(String variable) {
         char c = variable.charAt(0);
         if (c >= 'a' && c <= 'z')

@@ -1,6 +1,6 @@
 package com.efimchik.ifmo.web.mvc.controllers;
 
-import com.efimchik.ifmo.web.mvc.helpers.Helper;
+import com.efimchik.ifmo.web.mvc.helpers.CalcHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,9 +17,9 @@ public class ValueController {
     public ResponseEntity<String> setVar(@PathVariable String key, @RequestBody String bodyVal, HttpSession session) {
         ResponseEntity<String> responseEntity = null;
         String body = bodyVal.replaceAll("\\s","");
-        if("equation".equals(key) && !Helper.isExpression(body)) {
+        if("equation".equals(key) && !CalcHelper.isExpression(body)) {
             return ResponseEntity.status(HttpStatus.valueOf(400)).body("bad format");
-        } else if (Helper.isInteger(body) && (Integer.parseInt(body) > 10000 || Integer.parseInt(body) < -10000)){
+        } else if (CalcHelper.isInteger(body) && (Integer.parseInt(body) > 10000 || Integer.parseInt(body) < -10000)){
             return ResponseEntity.status(HttpStatus.valueOf(403)).body("bad value");
         }
 
