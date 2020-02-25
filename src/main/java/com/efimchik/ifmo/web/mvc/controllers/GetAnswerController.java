@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
-public class getAnswerController {
+public class GetAnswerController {
     @GetMapping("/calc/result")
     public ResponseEntity<String> getResult(HttpSession session) {
         Map<String, String> map = new HashMap<>();
