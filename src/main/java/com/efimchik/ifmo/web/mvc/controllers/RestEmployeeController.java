@@ -132,7 +132,7 @@ public class RestEmployeeController {
         String query = "select * from department where id=" + id;
         try {
             ResultSet rs = execQueryAndGetRS(query);
-            rs.next();
+            Objects.requireNonNull(rs).next();
             return getDep(rs);
         } catch (SQLException e) {
             e.printStackTrace();
