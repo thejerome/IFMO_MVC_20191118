@@ -3,14 +3,18 @@ package com.efimchik.ifmo.web.mvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value = "/calc/")
 public class ExpressionController {
-    private final static String EQUATION_PARAMETER = "equation";
     private final static String SESSION_EXPRESSION = "expression";
     private final static String SESSION_VARIABLE = "variable_";
     private final static int LOWER_BOUND = -10000;
