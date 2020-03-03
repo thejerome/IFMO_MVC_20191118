@@ -101,7 +101,7 @@ public class CalcController {
         return ResponseEntity.status(HttpStatus.valueOf(204)).body("204");
     }
 
-    private boolean isValid(String equation) {
+    private static boolean isValid(String equation) {
         int charPosition = 0;
         for (int i = 0; i < equation.length(); i++) {
             char ch = equation.charAt(i);
@@ -116,18 +116,18 @@ public class CalcController {
         return charPosition != 0;
     }
 
-    private Integer calc(Character operation, Integer num2, Integer num1) {
+    private static Integer calc(Character operation, Integer num2, Integer num1) {
         return (operation == '+') ? num1 + num2 :
                 (operation == '-') ? num1 - num2 :
                         (operation == '*') ? num1 * num2 :
                                 (operation == '/') ? num1 / num2 : 0;
     }
 
-    private int getStrength(Character o) {
+    private static int getStrength(Character o) {
         return (o == '(' || o == ')') ? 0 : (o == '+' || o == '-') ? 1 : 2;
     }
 
-    private boolean isHeStronger(char o1, Character o2) {
+    private static boolean isHeStronger(char o1, Character o2) {
         return getStrength(o1) > getStrength(o2);
     }
 
