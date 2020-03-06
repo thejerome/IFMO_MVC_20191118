@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentListMapper implements ListMapper<Department> {
+
     @Override
     public List<Department> mapList(ResultSet resultSet) {
         List<Department> departments;
