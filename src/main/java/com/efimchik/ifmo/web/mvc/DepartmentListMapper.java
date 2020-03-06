@@ -14,7 +14,7 @@ public class DepartmentListMapper implements ListMapper<Department> {
         try {
             departments = new ArrayList<>();
             while (resultSet.next()) {
-                departments.add(mapRow(resultSet, resultSet.getRow()));
+                departments.add(mapRow(resultSet));
             }
             return departments;
         } catch (SQLException e) {
@@ -23,7 +23,7 @@ public class DepartmentListMapper implements ListMapper<Department> {
         return null;
     }
 
-    private Department mapRow(ResultSet resultSet, int position) throws SQLException {
+    private Department mapRow(ResultSet resultSet) throws SQLException {
         return new Department(
                 Long.parseLong(resultSet.getString("ID")),
                 resultSet.getString("NAME"),
