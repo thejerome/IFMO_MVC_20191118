@@ -2,15 +2,21 @@ package com.efimchik.ifmo.web.mvc.entity;
 
 import com.efimchik.ifmo.web.mvc.domain.Position;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
+import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "Employee")
 public class EmployeeEntity {
-
-    public EmployeeEntity() {}
 
     @Id
     private Long id;

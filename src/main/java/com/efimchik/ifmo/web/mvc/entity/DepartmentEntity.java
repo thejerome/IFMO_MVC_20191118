@@ -1,6 +1,8 @@
 package com.efimchik.ifmo.web.mvc.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
 
 @Entity
 @Table(name = "Department")
