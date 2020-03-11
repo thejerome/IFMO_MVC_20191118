@@ -99,8 +99,10 @@ public class EmployeeController {
 
     private Department getDepById(BigInteger id) throws SQLException {
         ResultSet rs = DBDriver.getConnection().createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE).executeQuery("select * from department where id = " + id);
-        rs.next();
-        return getDep(rs);
+        if (rs.next()) {
+            return getDep(rs);
+        }
+        return null;
     }
 
     public static Long getDepIDByName(String depName) throws SQLException {
