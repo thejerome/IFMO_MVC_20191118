@@ -28,7 +28,7 @@ public class DataBase {
         try {
             Class.forName("org.h2.Driver");
         } catch (Exception e) {
-            throw new RuntimeException();
+            e.printStackTrace();
         }
 
     }
