@@ -100,7 +100,7 @@ public class Controller {
         try {
             Employee manager = null;
             if (rs.getString("MANAGER") != null) {
-                manager = manager(rs, new BigInteger(rs.getString("MANAGER")));
+                manager = manager(new BigInteger(rs.getString("MANAGER")));
             }
             System.out.println("121: " + manager);
             return setEmployee(rs, manager);
@@ -110,7 +110,7 @@ public class Controller {
         }
     }
 
-    private Employee manager(ResultSet resultSet, BigInteger id) {
+    private Employee manager(BigInteger id) {
         try {
             Employee manager = null;
             ResultSet rs = getRs("SELECT * FROM EMPLOYEE");
