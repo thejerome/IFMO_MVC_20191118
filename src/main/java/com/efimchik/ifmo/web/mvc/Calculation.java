@@ -75,12 +75,13 @@ public class Calculation {
     private boolean checkInt(Object var) {
         try {
             int val = (int) var;
+            System.out.println(val);
         } catch (ClassCastException e) {
             return false;
-        } finally {
-            return true;
         }
+        return true;
     }
+
 
     private String replace(Map<String, Object> varsMap, String expr) {
         String equation = expr;
