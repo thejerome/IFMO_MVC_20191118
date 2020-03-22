@@ -58,22 +58,22 @@ public class Controller {
         }
     }
 
-    private Employee manChain(ResultSet rs) {
+    private Employee manChain(ResultSet resultSet) {
         try {
-            int manID = rs.getInt("MANAGER");
+            int manID = resultSet.getInt("MANAGER");
             if (manID == 0) return null;
-            rs = getRs("SELECT * FROM EMPLOYEE");
-            int row = rs.getRow();
+            resultSet = getRs("SELECT * FROM EMPLOYEE");
+            int row = resultSet.getRow();
             Employee manager = null;
-            rs.first();
-            rs.previous();
-            while (rs.next()) {
-                if (rs.getInt("ID") == manID) {
-                    manager = empWMChain(rs);
+            resultSet.first();
+            resultSet.previous();
+            while (resultSet.next()) {
+                if (resultSet.getInt("ID") == manID) {
+                    manager = empWMChain(resultSet);
                     break;
                 }
             }
-            rs.absolute(row);
+            resultSet.absolute(row);
             return manager;
         } catch (SQLException e) {
             return null;
@@ -110,20 +110,20 @@ public class Controller {
         }
     }
 
-    private Employee manager(ResultSet rs, BigInteger id) {
+    private Employee manager(ResultSet resultSet, BigInteger id) {
         try {
             Employee manager = null;
-            rs = getRs("SELECT * FROM EMPLOYEE");
-            int p = rs.getRow();
-            rs.first();
-            rs.previous();
-            while (rs.next()) {
-                if (new BigInteger(rs.getString("ID")).equals(id)) {
-                    manager = setEmployee(rs, null);
+            resultSet = getRs("SELECT * FROM EMPLOYEE");
+            int p = resultSet.getRow();
+            resultSet.first();
+            resultSet.previous();
+            while (resultSet.next()) {
+                if (new BigInteger(resultSet.getString("ID")).equals(id)) {
+                    manager = setEmployee(resultSet, null);
                     break;
                 }
             }
-            rs.absolute(p);
+            resultSet.absolute(p);
             return manager;
         } catch (SQLException execption) {
             return null;
@@ -257,7 +257,7 @@ public class Controller {
     }
 
     @GetMapping(value = "/employees")
-    public ResponseEntity<List<Employee>> All(@RequestParam(required = false) Integer page,
+    public ResponseEntity<List<Employee>> all(@RequestParam(required = false) Integer page,
                                               @RequestParam(required = false) Integer size,
                                               @RequestParam(required = false) String sort) {
 
