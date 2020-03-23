@@ -114,6 +114,13 @@ public class Controller {
         try {
             Employee manager = null;
             ResultSet rs = getRs("SELECT * FROM EMPLOYEE");
+            assert rs != null;
+            if (rs.next()) {
+                rs.previous();
+            }
+            else {
+                return null;
+            }
             int p = rs.getRow();
             rs.first();
             rs.previous();
