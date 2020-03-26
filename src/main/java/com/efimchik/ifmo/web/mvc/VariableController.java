@@ -36,7 +36,8 @@ public class VariableController {
         if (session.getAttribute(urlPart) != null) {
             session.removeAttribute(urlPart);
             return ResponseEntity.status(HttpStatus.valueOf(204)).body(204);
-        } else return ResponseEntity.status(HttpStatus.valueOf(404)).body(404);
+        } else
+            return ResponseEntity.status(HttpStatus.valueOf(404)).body(404);
     }
 }
 
