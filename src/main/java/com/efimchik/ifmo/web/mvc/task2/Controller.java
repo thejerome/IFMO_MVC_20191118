@@ -34,6 +34,13 @@ public class Controller {
 
     private Department mapDep(BigInteger id) {
         ResultSet rs = getRs("SELECT * FROM DEPARTMENT WHERE ID=" + id);
+        try {
+            if (rs.next()) {
+                rs.previous();
+            }
+        } catch (SQLException e){
+            return null;
+        }
         Department dep;
         try {
             rs.next();
@@ -256,6 +263,13 @@ public class Controller {
 
     private Employee mapManagerWMC(BigInteger id) {
         ResultSet rs = getRs("SELECT * FROM EMPLOYEE WHERE ID=" + id);
+        try {
+            if (rs.next()) {
+                rs.previous();
+            }
+        } catch (SQLException e){
+            return null;
+        }
         assert rs != null;
         try {
             rs.next();
