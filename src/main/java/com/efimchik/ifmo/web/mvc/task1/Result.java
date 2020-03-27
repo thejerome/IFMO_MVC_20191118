@@ -1,4 +1,4 @@
-package com.efimchik.ifmo.web.mvc;
+package com.efimchik.ifmo.web.mvc.task1;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +10,6 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.efimchik.ifmo.web.mvc.Calculator.getResult;
-
 @RestController
 public class Result {
 
@@ -22,7 +20,7 @@ public class Result {
         } else {
             Map<String, Object> varsMap = map(session);
             try {
-                int result = getResult((String) session.getAttribute("equation"), varsMap);
+                int result = Calculator.getResult((String) session.getAttribute("equation"), varsMap);
                 return new ResponseEntity<>(String.valueOf(result), HttpStatus.valueOf(200));
             } catch (InvalidParameterException e) {
                 return new ResponseEntity<>("error", HttpStatus.valueOf(409));
