@@ -46,7 +46,7 @@ public class Controller {
 
     private Employee mapManager(BigInteger id) {
         ResultSet rs = getRs("SELECT * FROM EMPLOYEE WHERE ID=" + id);
-
+        assert rs != null;
         try {
             rs.next();
             Long Id = Long.parseLong(rs.getString("ID"));
@@ -256,7 +256,7 @@ public class Controller {
 
     private Employee mapManagerWMC(BigInteger id) {
         ResultSet rs = getRs("SELECT * FROM EMPLOYEE WHERE ID=" + id);
-
+        assert rs != null;
         try {
             rs.next();
             Long Id = Long.parseLong(rs.getString("ID"));
